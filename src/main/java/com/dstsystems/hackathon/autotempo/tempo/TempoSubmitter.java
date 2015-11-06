@@ -50,7 +50,7 @@ public class TempoSubmitter {
         tempoWorklog.setTimeSpentSeconds(worklogModel.getTimeSpent());
 
         TempoAuthor tempoAuthor = new TempoAuthor();
-        tempoAuthor.setName(userProfile.getUserName());
+        tempoAuthor.setName(userProfile.getUsername());
         tempoWorklog.setAuthor(tempoAuthor);
 
         TempoIssue tempoIssue = new TempoIssue();
@@ -100,7 +100,7 @@ public class TempoSubmitter {
 
         try {
             Credentials credentials = new UsernamePasswordCredentials(
-                    userProfile.getUserName(), userProfile.getPassword());
+                    userProfile.getUsername(), userProfile.getPassword());
             request.addHeader(new BasicScheme().authenticate(credentials, request, null));
 
             httpClient = HttpClientBuilder.create().useSystemProperties().build();

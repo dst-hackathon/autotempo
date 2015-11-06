@@ -34,7 +34,7 @@ public class TempoSubmitterTest {
 
         TempoUserProfileModel userProfile = new TempoUserProfileModel();
         userProfile.setURL("http://localhost:8111/");
-        userProfile.setUserName("myjirauser");
+        userProfile.setUsername("myjirauser");
         userProfile.setPassword("myjirapassword");
 
         tempoSubmitter = Mockito.spy(new TempoSubmitter(userProfile));

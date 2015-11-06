@@ -24,7 +24,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentModel> downloadExchangeAppointments(ExchangeUserProfileModel userProfile, Date start, Date end)
             throws Exception {
 
-        WebCredentials webCredentials = new WebCredentials(userProfile.getUserName(), userProfile.getPassword());
+        WebCredentials webCredentials = new WebCredentials(userProfile.getUsername(), userProfile.getPassword());
 
         ExchangeService exchangeService = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
         exchangeService.setCredentials(webCredentials);
