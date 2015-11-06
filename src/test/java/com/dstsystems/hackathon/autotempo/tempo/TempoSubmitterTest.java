@@ -2,17 +2,28 @@ package com.dstsystems.hackathon.autotempo.tempo;
 
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import java.io.IOException;
 import java.util.TimeZone;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.mockito.Mockito.doReturn;
 
 public class TempoSubmitterTest {
 
     private TempoSubmitter tempoSubmitter;
     private TempoConfig tempoConfig;
+
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(8111);
 
     @Before
     public void setUp() throws Exception {
@@ -20,11 +31,46 @@ public class TempoSubmitterTest {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
 
         tempoConfig = new TempoConfig();
-        tempoConfig.setUrl("http://localhost/");
+        tempoConfig.setUrl("http://localhost:8111/");
         tempoConfig.setUsername("myjirauser");
         tempoConfig.setPassword("myjirapassword");
 
-        tempoSubmitter = new TempoSubmitter(tempoConfig);
+        tempoSubmitter = Mockito.spy(new TempoSubmitter(tempoConfig));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Mockito.reset(tempoSubmitter);
+    }
+
+    @Test
+    public void testSubmitWorklog() throws Exception {
+        WorklogModel worklogModel = new WorklogModel();
+        doReturn("test json").when(tempoSubmitter).getWorklogJson(worklogModel);
+
+        stubFor(post(urlEqualTo("/rest/tempo-timesheets/3/worklogs/"))
+                .withRequestBody(equalTo("test json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("test response")));
+
+        tempoSubmitter.submitWorklog(worklogModel);
+    }
+
+    @Test(expected = IOException.class)
+    public void testSubmitWorklogCaseError() throws Exception {
+        WorklogModel worklogModel = new WorklogModel();
+        doReturn("test json").when(tempoSubmitter).getWorklogJson(worklogModel);
+
+        stubFor(post(urlEqualTo("/rest/tempo-timesheets/3/worklogs/"))
+                .withRequestBody(equalTo("test json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("test response")));
+
+        tempoSubmitter.submitWorklog(worklogModel);
     }
 
     @Test

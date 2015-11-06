@@ -5,18 +5,18 @@ package com.dstsystems.hackathon.autotempo.models;
  */
 public class UserProfileModel {
 
-    String uesrName;
+    String userName;
 
     String password;
 
     String URL;
 
-    public String getUesrName() {
-        return uesrName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUesrName(String uesrName) {
-        this.uesrName = uesrName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
