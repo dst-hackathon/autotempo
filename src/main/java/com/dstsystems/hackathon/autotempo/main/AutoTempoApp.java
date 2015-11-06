@@ -1,11 +1,7 @@
 package com.dstsystems.hackathon.autotempo.main;
 
 import com.dstsystems.hackathon.autotempo.models.*;
-import com.dstsystems.hackathon.autotempo.service.AcceptedAppointmentListFilter;
-import com.dstsystems.hackathon.autotempo.service.AppointmentServiceImpl;
-import com.dstsystems.hackathon.autotempo.service.FirstMatchRuleSetProcessor;
-import com.dstsystems.hackathon.autotempo.service.JsonAppointmentService;
-import com.dstsystems.hackathon.autotempo.service.UserProfileService;
+import com.dstsystems.hackathon.autotempo.service.*;
 import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 
 import java.text.ParseException;
@@ -35,7 +31,8 @@ public class AutoTempoApp {
 
     public static void main(String[] args) {
 
-        JsonAppointmentService appointmentService = new JsonAppointmentService();
+        //JsonAppointmentService appointmentService = new JsonAppointmentService();
+        AppointmentService appointmentService = new AppointmentServiceImpl();
         UserProfileService userProfileService = new UserProfileService();
 
         String userProfilePath = "src/test/resources/" + DEFAULT_USER_PROFILE_PATH;
