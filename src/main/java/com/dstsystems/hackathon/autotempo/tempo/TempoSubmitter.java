@@ -106,12 +106,14 @@ public class TempoSubmitter {
             httpClient = HttpClientBuilder.create().build();
             response = httpClient.execute(request);
 
+            String result = IOUtils.toString(response.getEntity().getContent());
+
             int httpStatus = response.getStatusLine().getStatusCode();
             if (httpStatus != 200) {
-                throw new IOException("Got http response code " + httpStatus);
+                throw new IOException("Got http response code " + httpStatus + ": " + result);
             }
 
-            return IOUtils.toString(response.getEntity().getContent());
+            return result;
         } catch (AuthenticationException e) {
             // From BasicScheme, should not happen
             throw new RuntimeException(e);
