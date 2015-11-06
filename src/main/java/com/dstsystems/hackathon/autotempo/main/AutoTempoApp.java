@@ -6,7 +6,6 @@ import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +55,10 @@ public class AutoTempoApp {
             AcceptedAppointmentListFilter acceptedAppointmentListFilter = new AcceptedAppointmentListFilter();
             acceptedAppointmentListFilter.filter(appointmentList);
             System.out.println("Appointment filtered: " + appointmentList.size() + " Appointments remaining");
+
+            ConflictAppointmentListFilter conflictAppointmentListFilter = new ConflictAppointmentListFilter();
+            conflictAppointmentListFilter.filter(appointmentList);
+            System.out.println("No conflicts found");
 
             RuleSet ruleSet = getSimpleRuleSet();
             System.out.println("SimpleRule set");

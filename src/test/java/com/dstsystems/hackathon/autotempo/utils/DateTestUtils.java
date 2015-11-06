@@ -11,4 +11,9 @@ public class DateTestUtils {
         return sdf.parse(date);
     }
 
+    public static Date buildDateTime(String dateTime) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return sdf.parse(dateTime);
+    }
+
 }
