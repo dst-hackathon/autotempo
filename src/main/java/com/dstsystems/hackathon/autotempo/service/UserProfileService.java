@@ -13,39 +13,74 @@ import java.util.Properties;
  * Created by user on 06/11/2015.
  */
 public class UserProfileService implements IUserProfileService {
-    @Override
-    public UserProfileModel getUserProfile(String pathFileName) {
 
-        UserProfileModel userProfile = new UserProfileModel();
+    private Properties readProperties( String pathFileName ) {
+
+        Properties properties = new Properties();
         try {
             File file = new File(pathFileName);
             FileInputStream fileInput = new FileInputStream(file);
-            Properties properties = new Properties();
             properties.load(fileInput);
             fileInput.close();
-
-            Enumeration enuKeys = properties.keys();
-            while (enuKeys.hasMoreElements()) {
-                String key = (String) enuKeys.nextElement();
-                String value = properties.getProperty(key);
-                switch (key) {
-                    case "userName":
-                        userProfile.setUserName(value);
-                        break;
-                    case "password":
-                        userProfile.setPassword(value);
-                        break;
-                    case "URL":
-                        userProfile.setURL(value);
-                        break;
-                    default:
-                        break;
-                }
-            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return properties;
+    }
+
+    @Override
+    public UserProfileModel getExChangeUserProfile(String pathFileName) {
+
+        UserProfileModel userProfile = new UserProfileModel();
+
+        Properties properties = readProperties( pathFileName );
+        Enumeration enuKeys = properties.keys();
+        while (enuKeys.hasMoreElements()) {
+            String key = (String) enuKeys.nextElement();
+            String value = properties.getProperty(key);
+            switch (key) {
+                case "userName":
+                    userProfile.setUserName(value);
+                    break;
+                case "password":
+                    userProfile.setPassword(value);
+                    break;
+                case "URL":
+                    userProfile.setURL(value);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return userProfile;
+    }
+
+    @Override
+    public UserProfileModel getTempoUserProfile(String pathFileName) {
+
+        UserProfileModel userProfile = new UserProfileModel();
+
+        Properties properties = readProperties( pathFileName );
+        Enumeration enuKeys = properties.keys();
+        while (enuKeys.hasMoreElements()) {
+            String key = (String) enuKeys.nextElement();
+            String value = properties.getProperty(key);
+            switch (key) {
+                case "userName":
+                    userProfile.setUserName(value);
+                    break;
+                case "password":
+                    userProfile.setPassword(value);
+                    break;
+                case "URL":
+                    userProfile.setURL(value);
+                    break;
+                default:
+                    break;
+            }
         }
 
         return userProfile;

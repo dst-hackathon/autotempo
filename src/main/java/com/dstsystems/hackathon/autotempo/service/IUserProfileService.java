@@ -7,5 +7,7 @@ import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
  */
 public interface IUserProfileService {
 
-    UserProfileModel getUserProfile(String pathFileName);
+    UserProfileModel getExChangeUserProfile(String pathFileName);
+
+    UserProfileModel getTempoUserProfile(String pathFileName);
 }

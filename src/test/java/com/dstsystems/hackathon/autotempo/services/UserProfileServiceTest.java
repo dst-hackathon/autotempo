@@ -2,6 +2,7 @@ package com.dstsystems.hackathon.autotempo.services;
 
 import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
 import com.dstsystems.hackathon.autotempo.service.UserProfileService;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -9,13 +10,51 @@ import org.junit.Test;
  */
 public class UserProfileServiceTest {
 
-    @Test
-    public void getUserProfile() {
+    UserProfileModel xchangeUserProfileModel;
+    UserProfileModel tempoUserProfileModel;
+
+    @Before
+    public void setupExchangeUserProfile() {
         UserProfileService service = new UserProfileService();
 
-        UserProfileModel userProfileModel = service.getUserProfile("src/main/resources/dt66277.profile");
-        System.out.println("user = " + userProfileModel.getUserName());
-        System.out.println("password = " + userProfileModel.getPassword());
-        System.out.println("URL = " + userProfileModel.getURL());
+        xchangeUserProfileModel = service.getExChangeUserProfile("src/test/resources/xchange.profile");
     }
+
+    @Before
+    public void setupTempoUserProfile() {
+        UserProfileService service = new UserProfileService();
+
+        tempoUserProfileModel = service.getExChangeUserProfile("src/test/resources/tempo.profile");
+    }
+
+    @Test
+    public void testExChangeUserName() {
+        org.junit.Assert.assertEquals("dt66277", xchangeUserProfileModel.getUserName());
+    }
+
+    @Test
+    public void testExChangePassword() {
+        org.junit.Assert.assertEquals("exchange password", xchangeUserProfileModel.getPassword());
+    }
+
+    @Test
+    public void testExChangeURL() {
+        org.junit.Assert.assertEquals("exchange URL", xchangeUserProfileModel.getURL());
+    }
+
+    @Test
+    public void testTempoUserName() {
+        org.junit.Assert.assertEquals("admin2", tempoUserProfileModel.getUserName());
+    }
+
+    @Test
+    public void testTempoPassword() {
+        org.junit.Assert.assertEquals("dsthackathon#999", tempoUserProfileModel.getPassword());
+    }
+
+    @Test
+    public void testTempoURL() {
+        org.junit.Assert.assertEquals("https://autotempotest.atlassian.net/", tempoUserProfileModel.getURL());
+    }
+
 }
