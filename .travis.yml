@@ -1,5 +1,8 @@
 language: java
 script: mvn package -B
+cache:
+  directories:
+    - $HOME/.m2
 jdk:
   - openjdk7
 before_deploy:
