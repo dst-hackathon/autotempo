@@ -1,6 +1,10 @@
 language: java
+script: mvn package -B
 jdk:
-- openjdk7
+  - openjdk7
+before_deploy:
+  - mkdir deploy
+  - cp target/autotempo*.jar deploy
 deploy:
   provider: gcs
   access_key_id: GOOGZXMX32D6S4DIL7XD
@@ -8,6 +12,9 @@ deploy:
     secure: K4DpzcQfKvBfQmIsWonG29Zn9DnqTxdYSYzqSZ6bdTn+0YoGG4DaYBjAUMeWHEHl31aqVdxemlyPRh963CQ2no9qgg0ycHANCh/JDL2BFxb/GY8GLbrTQtg7coDYKmT8ORUearuRzddWNvmnwenj2h6BX64kOpPZmZILuMrNxIo1D+UZBLgvroJ/SexCa21qj+D3Agjg3rvW+fq3umH8AKSwHfMmtiQzvGLF8f8VZprn/aRiIPXHZN9702+/0lgseRskqg+C29hu8mcrSRfIt+OhqQNB/R90oMVoeb2+x5DawRewm88HtDHqbxHJA8YK+eTfwsS5+11faHq2cgx0xDf7w7tigaGH+mHDOBvhzFP3Jd1t5m+ErRVaaoKyM966XHsveElMr1ltmf4ICPU+BP2KHGTUEn/S/2YpORPkoVLrC003tMR0hNeWmAzMhh2wO5xQC20CzXsPKcyck0qrpFdf9IGQGk1qiierBOxFdXKKFEOTS+YHluxG0QMNmNP0NqoGLAV04/rmjNmhEBlaWESLkDaJaQY/twJelsqGepNhVjXtPH09B9Ve3yNVmVxmBjS4+YPXRhbFdIKh2MxGqPfn4dGF+nVn3mzGYUwrU1HS4YBLXPcydJN0tfePK8bd/WyaJzQdurZyAYW+rT4OnQiUIxwhCulfHiVV02/7a1M=
   bucket: digital-bonfire-109614.appspot.com
   on:
+    branch: master
     repo: dst-hackathon/autotempo
   skip_cleanup: true
   acl: public-read
+  local-dir: deploy
+  upload-dir: autotempo
