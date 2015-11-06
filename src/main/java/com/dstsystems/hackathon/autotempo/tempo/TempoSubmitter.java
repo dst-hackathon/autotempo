@@ -1,6 +1,6 @@
 package com.dstsystems.hackathon.autotempo.tempo;
 
-import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoAuthor;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoIssue;
@@ -32,9 +32,9 @@ public class TempoSubmitter {
     private static final String REST_WORKLOG_PATH = "/rest/tempo-timesheets/3/worklogs/";
     private static final String TIME_TRACKING_FIELD = "?fields=timetracking";
 
-    private UserProfileModel userProfile;
+    private TempoUserProfileModel userProfile;
 
-    public TempoSubmitter(UserProfileModel userProfile) {
+    public TempoSubmitter(TempoUserProfileModel userProfile) {
         this.userProfile = userProfile;
     }
 

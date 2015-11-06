@@ -1,6 +1,7 @@
 package com.dstsystems.hackathon.autotempo.services;
 
-import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 import com.dstsystems.hackathon.autotempo.service.UserProfileService;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,21 +11,21 @@ import org.junit.Test;
  */
 public class UserProfileServiceTest {
 
-    UserProfileModel xchangeUserProfileModel;
-    UserProfileModel tempoUserProfileModel;
+    ExchangeUserProfileModel xchangeUserProfileModel;
+    TempoUserProfileModel tempoUserProfileModel;
 
     @Before
     public void setupExchangeUserProfile() {
         UserProfileService service = new UserProfileService();
 
-        xchangeUserProfileModel = service.getExChangeUserProfile("src/test/resources/xchange.profile");
+        xchangeUserProfileModel = service.getExChangeUserProfile("src/test/resources/user.profile");
     }
 
     @Before
     public void setupTempoUserProfile() {
         UserProfileService service = new UserProfileService();
 
-        tempoUserProfileModel = service.getExChangeUserProfile("src/test/resources/tempo.profile");
+        tempoUserProfileModel = service.getTempoUserProfile("src/test/resources/user.profile");
     }
 
     @Test

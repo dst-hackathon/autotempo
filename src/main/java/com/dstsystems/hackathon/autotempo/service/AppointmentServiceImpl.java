@@ -1,7 +1,7 @@
 package com.dstsystems.hackathon.autotempo.service;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
-import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
 import microsoft.exchange.webservices.data.core.enumeration.property.WellKnownFolderName;
@@ -21,7 +21,7 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
-    public List<AppointmentModel> downloadExchangeAppointments(UserProfileModel userProfile, Date start, Date end)
+    public List<AppointmentModel> downloadExchangeAppointments(ExchangeUserProfileModel userProfile, Date start, Date end)
             throws Exception {
 
         WebCredentials webCredentials = new WebCredentials(userProfile.getUserName(), userProfile.getPassword());

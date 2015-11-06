@@ -1,6 +1,7 @@
 package com.dstsystems.hackathon.autotempo.service;
 
-import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,9 +32,9 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public UserProfileModel getExChangeUserProfile(String pathFileName) {
+    public ExchangeUserProfileModel getExChangeUserProfile(String pathFileName) {
 
-        UserProfileModel userProfile = new UserProfileModel();
+        ExchangeUserProfileModel userProfile = new ExchangeUserProfileModel();
 
         Properties properties = readProperties( pathFileName );
         Enumeration enuKeys = properties.keys();
@@ -41,13 +42,13 @@ public class UserProfileService implements IUserProfileService {
             String key = (String) enuKeys.nextElement();
             String value = properties.getProperty(key);
             switch (key) {
-                case "userName":
+                case "exchange.userName":
                     userProfile.setUserName(value);
                     break;
-                case "password":
+                case "exchange.password":
                     userProfile.setPassword(value);
                     break;
-                case "URL":
+                case "exchange.URL":
                     userProfile.setURL(value);
                     break;
                 default:
@@ -59,9 +60,9 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public UserProfileModel getTempoUserProfile(String pathFileName) {
+    public TempoUserProfileModel getTempoUserProfile(String pathFileName) {
 
-        UserProfileModel userProfile = new UserProfileModel();
+        TempoUserProfileModel userProfile = new TempoUserProfileModel();
 
         Properties properties = readProperties( pathFileName );
         Enumeration enuKeys = properties.keys();
@@ -69,13 +70,13 @@ public class UserProfileService implements IUserProfileService {
             String key = (String) enuKeys.nextElement();
             String value = properties.getProperty(key);
             switch (key) {
-                case "userName":
+                case "tempo.userName":
                     userProfile.setUserName(value);
                     break;
-                case "password":
+                case "tempo.password":
                     userProfile.setPassword(value);
                     break;
-                case "URL":
+                case "tempo.URL":
                     userProfile.setURL(value);
                     break;
                 default:

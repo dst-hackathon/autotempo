@@ -1,6 +1,6 @@
 package com.dstsystems.hackathon.autotempo.tempo;
 
-import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -32,7 +32,7 @@ public class TempoSubmitterTest {
         // Set timezone for CI server
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
 
-        UserProfileModel userProfile = new UserProfileModel();
+        TempoUserProfileModel userProfile = new TempoUserProfileModel();
         userProfile.setURL("http://localhost:8111/");
         userProfile.setUserName("myjirauser");
         userProfile.setPassword("myjirapassword");

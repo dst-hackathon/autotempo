@@ -3,8 +3,7 @@ package com.dstsystems.hackathon.autotempo.models;
 /**
  * Created by user on 06/11/2015.
  */
-public class UserProfileModel {
-
+public class TempoUserProfileModel {
     String userName;
 
     String password;

@@ -1,13 +1,14 @@
 package com.dstsystems.hackathon.autotempo.service;
 
-import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 
 /**
  * Created by user on 06/11/2015.
  */
 public interface IUserProfileService {
 
-    UserProfileModel getExChangeUserProfile(String pathFileName);
+    ExchangeUserProfileModel getExChangeUserProfile(String pathFileName);
 
-    UserProfileModel getTempoUserProfile(String pathFileName);
+    TempoUserProfileModel getTempoUserProfile(String pathFileName);
 }
