@@ -4,6 +4,7 @@ import com.dstsystems.hackathon.autotempo.models.*;
 import com.dstsystems.hackathon.autotempo.service.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.service.AppointmentServiceImpl;
 import com.dstsystems.hackathon.autotempo.service.FirstMatchRuleSetProcessor;
+import com.dstsystems.hackathon.autotempo.service.JsonAppointmentService;
 import com.dstsystems.hackathon.autotempo.service.UserProfileService;
 import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 
@@ -34,18 +35,19 @@ public class AutoTempoApp {
 
     public static void main(String[] args) {
 
-        AppointmentServiceImpl appointmentService = new AppointmentServiceImpl();
+        JsonAppointmentService appointmentService = new JsonAppointmentService();
         UserProfileService userProfileService = new UserProfileService();
 
-        String userProfilePath = DEFAULT_USER_PROFILE_PATH;
+        String userProfilePath = "src/test/resources/" + DEFAULT_USER_PROFILE_PATH;
 
         if (args.length > 0 && args[0] != null) {
             userProfilePath = args[0];
         }
 
         ExchangeUserProfileModel xchangeUserProfile = userProfileService.getExChangeUserProfile(userProfilePath);
-        System.out.println("UserProfile loaded");
-
+        System.out.println("ExchangeUserProfile loaded");
+        TempoUserProfileModel tempoUserProfileModel = userProfileService.getTempoUserProfile(userProfilePath);
+        System.out.println("TempoUserProfile loaded");
         Date startDate = generateDateFromString( "11/07/2015" );
         Date endDate = generateDateFromString( "11/07/2015" );
         try {
@@ -58,25 +60,25 @@ public class AutoTempoApp {
 
             RuleSet ruleSet = getSimpleRuleSet();
 
-            List<WorklogModel> worklogModels = new ArrayList<>();
-
             for (int i = 0; i < appointmentList.size(); i++ )
             {
                 AppointmentModel appointmentModel = appointmentList.get(i);
 
                 WorklogModel worklogModel = new WorklogModel();
-                new FirstMatchRuleSetProcessor().process(worklogModel, appointmentModel, ruleSet);
+                if ( new FirstMatchRuleSetProcessor().process(worklogModel, appointmentModel, ruleSet) ) {
+                    WorklogHelper.populateCommon( worklogModel, appointmentModel );
+                    worklogModel.setComment(appointmentModel.getSubject());
 
-                System.out.println( worklogModel.getAccountKey() );
+                    System.out.println( worklogModel.getAccountKey() );
+                    System.out.println( worklogModel.getComment() );
+                    System.out.println( worklogModel.getIssueKey() );
+                    System.out.println( worklogModel.getDate() );
+                    System.out.println( worklogModel.getTimeSpent() );
 
-                System.out.println( worklogModel.getComment() );
-
-                System.out.println( worklogModel.getIssueKey() );
-
-                worklogModels.add(worklogModel);
+                    new TempoSubmitter(tempoUserProfileModel).submitWorklog(worklogModel);
+                    System.out.println( "DONE" );
+                }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,14 +86,19 @@ public class AutoTempoApp {
     }
 
     private static RuleSet getSimpleRuleSet() {
+        RuleSet ruleSet = new RuleSet();
+
         SimpleCategoryMappingRule rule = new SimpleCategoryMappingRule();
-        rule.setComment("Test comment");
         rule.setIssueKey("INT-1");
         rule.setAccountKey("ATT02");
-        rule.setCategory("INTERNAL");
+        rule.setCategory("Training");
 
-        RuleSet ruleSet = new RuleSet();
-        ruleSet.setRuleList(Arrays.asList((Rule) rule));
+        SimpleCategoryMappingRule rule2 = new SimpleCategoryMappingRule();
+        rule2.setIssueKey("TP-1");
+        rule2.setAccountKey("ATT01");
+        rule2.setCategory("Project");
+
+        ruleSet.setRuleList(Arrays.asList((Rule) rule, rule2));
         return ruleSet;
     }
 
