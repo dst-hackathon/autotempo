@@ -1,6 +1,7 @@
 package com.dstsystems.hackathon.autotempo.models;
 
 import microsoft.exchange.webservices.data.core.enumeration.property.MeetingResponseType;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.List;
@@ -57,4 +58,14 @@ public class AppointmentModel {
         this.myResponseType = myResponseType;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("subject", subject)
+                .append("start", start)
+                .append("end", end)
+                .append("categories", categories)
+                .append("myResponseType", myResponseType)
+                .toString();
+    }
 }

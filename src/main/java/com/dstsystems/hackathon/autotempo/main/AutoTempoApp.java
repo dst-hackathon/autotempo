@@ -51,6 +51,7 @@ public class AutoTempoApp {
 
             List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(xchangeUserProfile, startDate, endDate);
             System.out.println(appointmentList.size() + " Appointments Loaded");
+            System.out.println(appointmentList);
 
             AcceptedAppointmentListFilter acceptedAppointmentListFilter = new AcceptedAppointmentListFilter();
             acceptedAppointmentListFilter.filter(appointmentList);
