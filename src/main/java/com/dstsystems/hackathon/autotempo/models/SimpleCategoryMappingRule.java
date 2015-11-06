@@ -1,5 +1,10 @@
 package com.dstsystems.hackathon.autotempo.models;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Simple Category based Worklog mapping rule
  *
@@ -7,10 +12,24 @@ package com.dstsystems.hackathon.autotempo.models;
  *
  * @author Tank
  */
-public class SimpleCategoryMappingRule implements Rule{
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class SimpleCategoryMappingRule extends Rule{
     private String category;
     private String issueKey;
     private String accountKey;
+
+    @Override
+    public String toString() {
+        return "SimpleCategoryMappingRule{" +
+                "category='" + category + '\'' +
+                ", issueKey='" + issueKey + '\'' +
+                ", accountKey='" + accountKey + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
+
     private String comment;
 
     @Override
