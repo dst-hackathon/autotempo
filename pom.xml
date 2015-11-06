@@ -10,9 +10,11 @@
 
     <properties>
         <!-- Main -->
+        <java.version>1.7</java.version>
+
         <ews-java-api.version>2.0</ews-java-api.version>
         <jackson.version>2.6.3</jackson.version>
-        <java.version>1.7</java.version>
+        <commons-collections4.version>4.0</commons-collections4.version>
 
         <!-- Test -->
         <junit.version>4.8.1</junit.version>
@@ -44,6 +46,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
         </dependency>
 
         <!-- Test -->
