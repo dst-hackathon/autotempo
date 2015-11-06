@@ -34,7 +34,7 @@ public class AcceptedAppointmentListFilterTest {
 
         new AcceptedAppointmentListFilter().filter(appointments);
 
-        List<AppointmentModel> expectedAppointments = Arrays.asList(appointment1, appointment4);
+        List<AppointmentModel> expectedAppointments = Arrays.asList(appointment1, appointment4, appointment6);
         assertEquals(expectedAppointments, appointments);
     }
 

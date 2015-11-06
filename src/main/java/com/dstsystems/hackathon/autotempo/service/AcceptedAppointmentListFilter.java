@@ -17,8 +17,9 @@ public class AcceptedAppointmentListFilter implements AppointmentListFilter {
             @Override
             public boolean evaluate(AppointmentModel appointment) {
                 switch (appointment.getMyResponseType()) {
-                    case Organizer:
-                    case Accept:
+                    case Organizer: // When we create an appointment and send invitation to others
+                    case Accept: // When we accept an appointment from others
+                    case Unknown: // When we don't send the appointment
                         return true;
                     default:
                         return false;
