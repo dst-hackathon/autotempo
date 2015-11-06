@@ -9,8 +9,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!-- Main -->
         <ews-java-api.version>2.0</ews-java-api.version>
+        <jackson.version>2.6.3</jackson.version>
         <java.version>1.7</java.version>
+
+        <!-- Test -->
+        <junit.version>4.8.1</junit.version>
     </properties>
 
     <build>
@@ -27,10 +32,25 @@
     </build>
 
     <dependencies>
+        <!-- Main -->
         <dependency>
             <groupId>com.microsoft.ews-java-api</groupId>
             <artifactId>ews-java-api</artifactId>
             <version>${ews-java-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
