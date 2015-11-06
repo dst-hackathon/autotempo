@@ -54,8 +54,10 @@ public class AutoTempoApp {
 
             AcceptedAppointmentListFilter acceptedAppointmentListFilter = new AcceptedAppointmentListFilter();
             acceptedAppointmentListFilter.filter(appointmentList);
+            System.out.println("Appointment filtered: " + appointmentList.size() + " Appointments remaining");
 
             RuleSet ruleSet = getSimpleRuleSet();
+            System.out.println("SimpleRule set");
 
             for (int i = 0; i < appointmentList.size(); i++ )
             {
@@ -63,6 +65,7 @@ public class AutoTempoApp {
 
                 WorklogModel worklogModel = new WorklogModel();
                 if ( new FirstMatchRuleSetProcessor().process(worklogModel, appointmentModel, ruleSet) ) {
+                    System.out.println( appointmentModel.getSubject() + " matches the rule set");
                     WorklogHelper.populateCommon( worklogModel, appointmentModel );
                     worklogModel.setComment(appointmentModel.getSubject());
 
@@ -73,7 +76,7 @@ public class AutoTempoApp {
                     System.out.println( worklogModel.getTimeSpent() );
 
                     new TempoSubmitter(tempoUserProfileModel).submitWorklog(worklogModel);
-                    System.out.println( "DONE" );
+                    System.out.println( worklogModel.getIssueKey() + " has been logged on " + worklogModel.getDate().toString() + " with time = " + worklogModel.getTimeSpent() + "." );
                 }
             }
         } catch (Exception e) {
