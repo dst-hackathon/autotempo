@@ -24,6 +24,7 @@
         <wiremock.version>1.57</wiremock.version>
 
         <!-- Package -->
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <maven-shade-plugin.version>2.3</maven-shade-plugin.version>
     </properties>
 
@@ -32,6 +33,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
