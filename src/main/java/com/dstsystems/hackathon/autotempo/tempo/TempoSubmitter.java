@@ -103,7 +103,7 @@ public class TempoSubmitter {
                     userProfile.getUserName(), userProfile.getPassword());
             request.addHeader(new BasicScheme().authenticate(credentials, request, null));
 
-            httpClient = HttpClientBuilder.create().build();
+            httpClient = HttpClientBuilder.create().useSystemProperties().build();
             response = httpClient.execute(request);
 
             String result = IOUtils.toString(response.getEntity().getContent());
