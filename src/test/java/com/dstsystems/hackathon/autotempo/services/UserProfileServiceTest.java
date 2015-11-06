@@ -3,7 +3,6 @@ package com.dstsystems.hackathon.autotempo.services;
 import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
 import com.dstsystems.hackathon.autotempo.service.UserProfileService;
 import org.junit.Test;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * Created by user on 06/11/2015.
