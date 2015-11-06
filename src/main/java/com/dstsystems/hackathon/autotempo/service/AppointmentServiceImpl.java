@@ -27,6 +27,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         WebCredentials webCredentials = new WebCredentials(userProfile.getUserName(), userProfile.getPassword());
 
         ExchangeService exchangeService = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
+        exchangeService.setCredentials(webCredentials);
         exchangeService.setUrl(new URI(userProfile.getURL()));
 
         CalendarFolder calendarFolder = CalendarFolder.bind(exchangeService, WellKnownFolderName.Calendar);
