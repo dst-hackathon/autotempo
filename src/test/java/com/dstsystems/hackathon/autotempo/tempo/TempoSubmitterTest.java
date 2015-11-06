@@ -51,13 +51,16 @@ public class TempoSubmitterTest {
         doReturn("test json").when(tempoSubmitter).getWorklogJson(worklogModel);
 
         stubFor(post(urlEqualTo("/rest/tempo-timesheets/3/worklogs/"))
-                .withRequestBody(equalTo("test json"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody("test response")));
 
         tempoSubmitter.submitWorklog(worklogModel);
+
+        verify(postRequestedFor(urlEqualTo("/rest/tempo-timesheets/3/worklogs/"))
+                .withHeader("Authorization", equalTo("Basic bXlqaXJhdXNlcjpteWppcmFwYXNzd29yZA=="))
+                .withRequestBody(equalTo("test json")));
     }
 
     @Test(expected = IOException.class)
@@ -66,7 +69,6 @@ public class TempoSubmitterTest {
         doReturn("test json").when(tempoSubmitter).getWorklogJson(worklogModel);
 
         stubFor(post(urlEqualTo("/rest/tempo-timesheets/3/worklogs/"))
-                .withRequestBody(equalTo("test json"))
                 .willReturn(aResponse()
                         .withStatus(400)
                         .withHeader("Content-Type", "application/json")

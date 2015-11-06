@@ -8,11 +8,15 @@ import com.dstsystems.hackathon.autotempo.tempo.models.TempoWorklogAttribute;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.auth.AuthenticationException;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -62,7 +66,6 @@ public class TempoSubmitter {
         return new ObjectMapper().writeValueAsString(tempoWorklog);
     }
 
-    // TODO: authentication
     protected long getRemainingEstimate(String issueKey) throws IOException {
         HttpGet httpGet = new HttpGet(tempoConfig.getUrl() + REST_ISSUE_PATH + issueKey + TIME_TRACKING_FIELD);
         String issueJson = sendHttpRequest(httpGet);
@@ -95,6 +98,10 @@ public class TempoSubmitter {
         CloseableHttpResponse response = null;
 
         try {
+            Credentials credentials = new UsernamePasswordCredentials(
+                    tempoConfig.getUsername(), tempoConfig.getPassword());
+            request.addHeader(new BasicScheme().authenticate(credentials, request, null));
+
             httpClient = HttpClientBuilder.create().build();
             response = httpClient.execute(request);
 
@@ -104,6 +111,9 @@ public class TempoSubmitter {
             }
 
             return IOUtils.toString(response.getEntity().getContent());
+        } catch (AuthenticationException e) {
+            // From BasicScheme, should not happen
+            throw new RuntimeException(e);
         } finally {
             if (httpClient != null) {
                 httpClient.close();
