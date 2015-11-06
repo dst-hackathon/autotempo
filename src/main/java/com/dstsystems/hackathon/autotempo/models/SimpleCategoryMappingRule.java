@@ -16,7 +16,7 @@ public class SimpleCategoryMappingRule implements Rule{
     @Override
     public boolean isMatch(AppointmentModel appointment) {
         if (appointment != null && appointment.getCategories() != null && !appointment.getCategories().isEmpty()) {
-            return category.equals(appointment.getCategories().get(0));
+            return appointment.getCategories().contains(category);
         }
         return false;
     }
