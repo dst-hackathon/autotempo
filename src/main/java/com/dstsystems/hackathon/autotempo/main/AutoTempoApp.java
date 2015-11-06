@@ -1,12 +1,15 @@
 package com.dstsystems.hackathon.autotempo.main;
 
 import com.dstsystems.hackathon.autotempo.models.*;
+import com.dstsystems.hackathon.autotempo.service.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.service.AppointmentServiceImpl;
 import com.dstsystems.hackathon.autotempo.service.FirstMatchRuleSetProcessor;
 import com.dstsystems.hackathon.autotempo.service.UserProfileService;
+import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -40,13 +43,22 @@ public class AutoTempoApp {
             userProfilePath = args[0];
         }
 
-        // To get appointments.
         ExchangeUserProfileModel xchangeUserProfile = userProfileService.getExChangeUserProfile(userProfilePath);
+        System.out.println("UserProfile loaded");
+
         Date startDate = generateDateFromString( "11/07/2015" );
         Date endDate = generateDateFromString( "11/07/2015" );
         try {
+
             List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(xchangeUserProfile, startDate, endDate);
+            System.out.println("Appointments Loaded");
+
+            AcceptedAppointmentListFilter acceptedAppointmentListFilter = new AcceptedAppointmentListFilter();
+            acceptedAppointmentListFilter.filter(appointmentList);
+
             RuleSet ruleSet = getSimpleRuleSet();
+
+            List<WorklogModel> worklogModels = new ArrayList<>();
 
             for (int i = 0; i < appointmentList.size(); i++ )
             {
@@ -61,7 +73,10 @@ public class AutoTempoApp {
 
                 System.out.println( worklogModel.getIssueKey() );
 
+                worklogModels.add(worklogModel);
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
