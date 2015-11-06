@@ -16,7 +16,9 @@ import java.util.List;
  */
 public class Main {
 
-    private static Date generateDateFromString( String dateInString ) {
+    public static final String DEFAULT_USER_PROFILE_PATH = "/user.profile";
+
+    private static Date generateDateFromString(String dateInString ) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         try {
@@ -32,24 +34,23 @@ public class Main {
         AppointmentServiceImpl appointmentService = new AppointmentServiceImpl();
         UserProfileService userProfileService = new UserProfileService();
 
+        String userProfilePath = DEFAULT_USER_PROFILE_PATH;
+
+        if (args[0] != null) {
+            userProfilePath = args[0];
+        }
+
         // To get appointments.
-        ExchangeUserProfileModel xchangeUserProfile = userProfileService.getExChangeUserProfile("src/test/resources/user.profile");
+        ExchangeUserProfileModel xchangeUserProfile = userProfileService.getExChangeUserProfile(userProfilePath);
         Date startDate = generateDateFromString( "11/07/2015" );
         Date endDate = generateDateFromString( "11/07/2015" );
         try {
-            List<AppointmentModel> appointmetList = appointmentService.downloadExchangeAppointments(xchangeUserProfile, startDate, endDate);
-            SimpleCategoryMappingRule rule = new SimpleCategoryMappingRule();
-            rule.setComment("Test comment");
-            rule.setIssueKey("INT-1");
-            rule.setAccountKey("ATT02");
-            rule.setCategory("INTERNAL");
+            List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(xchangeUserProfile, startDate, endDate);
+            RuleSet ruleSet = getSimpleRuleSet();
 
-            RuleSet ruleSet = new RuleSet();
-            ruleSet.setRuleList(Arrays.asList((Rule) rule));
-
-            for (int i = 0; i < appointmetList.size(); i++ )
+            for (int i = 0; i < appointmentList.size(); i++ )
             {
-                AppointmentModel appointmentModel = appointmetList.get(i);
+                AppointmentModel appointmentModel = appointmentList.get(i);
 
                 WorklogModel worklogModel = new WorklogModel();
                 new FirstMatchRuleSetProcessor().process(worklogModel, appointmentModel, ruleSet);
@@ -60,12 +61,23 @@ public class Main {
 
                 System.out.println( worklogModel.getIssueKey() );
 
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private static RuleSet getSimpleRuleSet() {
+        SimpleCategoryMappingRule rule = new SimpleCategoryMappingRule();
+        rule.setComment("Test comment");
+        rule.setIssueKey("INT-1");
+        rule.setAccountKey("ATT02");
+        rule.setCategory("INTERNAL");
+
+        RuleSet ruleSet = new RuleSet();
+        ruleSet.setRuleList(Arrays.asList((Rule) rule));
+        return ruleSet;
     }
 
 
