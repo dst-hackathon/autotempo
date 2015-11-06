@@ -3,6 +3,7 @@ package com.dstsystems.hackathon.autotempo.tempo;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.TimeZone;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
 public class TempoSubmitterTest {
@@ -74,13 +76,51 @@ public class TempoSubmitterTest {
     }
 
     @Test
+    public void testGetRemainingEstimate() throws Exception {
+        String issueKey = "TP-1";
+
+        mockRemainingEstimate(issueKey);
+
+        assertEquals(7200, tempoSubmitter.getRemainingEstimate(issueKey));
+    }
+
+    @Test
+    public void testGetRemainingEstimateCaseNoEstimate() throws Exception {
+        String issueKey = "INT-2";
+
+        mockRemainingEstimate(issueKey);
+
+        assertEquals(0, tempoSubmitter.getRemainingEstimate(issueKey));
+    }
+
+    @Test
+    public void testGetNewRemainingEstimate() throws Exception {
+        String issueKey = "INT-2";
+
+        doReturn(1000L).when(tempoSubmitter).getRemainingEstimate(issueKey);
+
+        assertEquals(900, tempoSubmitter.getNewRemainingEstimate(issueKey, 100));
+    }
+
+    @Test
+    public void testGetNewRemainingEstimateCaseNegative() throws Exception {
+        String issueKey = "INT-2";
+
+        doReturn(1000L).when(tempoSubmitter).getRemainingEstimate(issueKey);
+
+        assertEquals(0, tempoSubmitter.getNewRemainingEstimate(issueKey, 10000));
+    }
+
+    @Test
     public void testGetWorklogJsonInternal() throws Exception {
         WorklogModel worklogModel = new WorklogModel();
         worklogModel.setComment("My comment");
-        worklogModel.setIssueKey("INT-1");
+        worklogModel.setIssueKey("TP-1");
         worklogModel.setTimeSpent(3600);
         worklogModel.setDate(DateTestUtils.buildDate("2015-11-01"));
         worklogModel.setAccountKey("ATT01");
+
+        doReturn(10L).when(tempoSubmitter).getNewRemainingEstimate("TP-1", 3600);
 
         String expectedJson = "{\n" +
                 "    \"dateStarted\": \"2015-10-31T17:00:00.000Z\",\n" +
@@ -90,8 +130,8 @@ public class TempoSubmitterTest {
                 "        \"name\": \"myjirauser\"\n" +
                 "    },\n" +
                 "    \"issue\": {\n" +
-                "        \"key\": \"INT-1\",\n" +
-                "        \"remainingEstimateSeconds\": 0\n" +
+                "        \"key\": \"TP-1\",\n" +
+                "        \"remainingEstimateSeconds\": 10\n" +
                 "    },\n" +
                 "    \"worklogAttributes\": [\n" +
                 "        {\n" +
@@ -104,6 +144,12 @@ public class TempoSubmitterTest {
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
-
+    private void mockRemainingEstimate(String issueKey) throws IOException {
+        stubFor(get(urlEqualTo("/rest/api/2/issue/" + issueKey + "?fields=timetracking"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(IOUtils.toString(this.getClass().getResourceAsStream(issueKey + ".json")))));
+    }
 
 }

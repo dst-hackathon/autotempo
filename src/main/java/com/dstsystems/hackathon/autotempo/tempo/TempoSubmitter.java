@@ -5,10 +5,11 @@ import com.dstsystems.hackathon.autotempo.tempo.models.TempoAuthor;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoIssue;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoWorklog;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoWorklogAttribute;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
@@ -22,7 +23,9 @@ import java.util.List;
 public class TempoSubmitter {
 
     private static final String ACCOUNT_ATTRIBUTE = "_account_";
+    private static final String REST_ISSUE_PATH = "/rest/api/2/issue/";
     private static final String REST_WORKLOG_PATH = "/rest/tempo-timesheets/3/worklogs/";
+    private static final String TIME_TRACKING_FIELD = "?fields=timetracking";
 
     private TempoConfig tempoConfig;
 
@@ -35,7 +38,7 @@ public class TempoSubmitter {
         postWorklog(worklogJson);
     }
 
-    protected String getWorklogJson(WorklogModel worklogModel) throws JsonProcessingException {
+    protected String getWorklogJson(WorklogModel worklogModel) throws IOException {
         TempoWorklog tempoWorklog = new TempoWorklog();
         tempoWorklog.setComment(worklogModel.getComment());
         tempoWorklog.setDateStarted(worklogModel.getDate());
@@ -47,8 +50,9 @@ public class TempoSubmitter {
 
         TempoIssue tempoIssue = new TempoIssue();
         tempoIssue.setKey(worklogModel.getIssueKey());
+        tempoIssue.setRemainingEstimateSeconds(getNewRemainingEstimate(
+                worklogModel.getIssueKey(), worklogModel.getTimeSpent()));
         tempoWorklog.setIssue(tempoIssue);
-        // TODO: need to get and calculate remaining time for non-internal issues
 
         List<TempoWorklogAttribute> worklogAttributes = new ArrayList<>();
         worklogAttributes.add(new TempoWorklogAttribute(
@@ -56,6 +60,25 @@ public class TempoSubmitter {
         tempoWorklog.setWorklogAttributes(worklogAttributes);
 
         return new ObjectMapper().writeValueAsString(tempoWorklog);
+    }
+
+    // TODO: authentication
+    protected long getRemainingEstimate(String issueKey) throws IOException {
+        HttpGet httpGet = new HttpGet(tempoConfig.getUrl() + REST_ISSUE_PATH + issueKey + TIME_TRACKING_FIELD);
+        String issueJson = sendHttpRequest(httpGet);
+
+        JsonNode jsonNode = new ObjectMapper().readTree(issueJson);
+        return jsonNode.path("fields").path("timetracking").path("remainingEstimateSeconds").asLong();
+    }
+
+    protected long getNewRemainingEstimate(String issueKey, long timeSpent) throws IOException {
+        long remainingEstimate = getRemainingEstimate(issueKey);
+        remainingEstimate -= timeSpent;
+        if (remainingEstimate < 0) {
+            remainingEstimate = 0;
+        }
+
+        return remainingEstimate;
     }
 
     private String postWorklog(String content) throws IOException {

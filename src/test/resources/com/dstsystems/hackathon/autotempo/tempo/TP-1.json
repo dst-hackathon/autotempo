@@ -1,0 +1,16 @@
+{
+  "expand": "renderedFields,names,schema,transitions,operations,editmeta,changelog,versionedRepresentations",
+  "id": "10000",
+  "self": "https://autotempotest.atlassian.net/rest/api/2/issue/10000",
+  "key": "TP-1",
+  "fields": {
+    "timetracking": {
+      "originalEstimate": "1d 2h",
+      "remainingEstimate": "2h",
+      "timeSpent": "2h",
+      "originalEstimateSeconds": 36000,
+      "remainingEstimateSeconds": 7200,
+      "timeSpentSeconds": 7200
+    }
+  }
+}
