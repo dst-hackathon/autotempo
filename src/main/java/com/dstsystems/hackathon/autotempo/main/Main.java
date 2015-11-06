@@ -36,7 +36,7 @@ public class Main {
 
         String userProfilePath = DEFAULT_USER_PROFILE_PATH;
 
-        if (args[0] != null) {
+        if (args.length > 0 && args[0] != null) {
             userProfilePath = args[0];
         }
 
