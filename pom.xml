@@ -8,11 +8,29 @@
     <artifactId>autotempo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <ews-java-api.version>2.0</ews-java-api.version>
+        <java.version>1.7</java.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.microsoft.ews-java-api</groupId>
             <artifactId>ews-java-api</artifactId>
-            <version>2.0</version>
+            <version>${ews-java-api.version}</version>
         </dependency>
     </dependencies>
 
