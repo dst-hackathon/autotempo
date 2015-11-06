@@ -1,5 +1,7 @@
 package com.dstsystems.hackathon.autotempo.models;
 
+import microsoft.exchange.webservices.data.core.enumeration.property.MeetingResponseType;
+
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,8 @@ public class AppointmentModel {
     private Date end;
 
     List<String> categories;
+
+    private MeetingResponseType myResponseType;
 
     public String getSubject() {
         return subject;
@@ -44,4 +48,13 @@ public class AppointmentModel {
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }
+
+    public MeetingResponseType getMyResponseType() {
+        return myResponseType;
+    }
+
+    public void setMyResponseType(MeetingResponseType myResponseType) {
+        this.myResponseType = myResponseType;
+    }
+
 }

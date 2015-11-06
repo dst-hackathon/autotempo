@@ -43,6 +43,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointmentModel.setStart(appointment.getStart());
             appointmentModel.setEnd(appointment.getEnd());
             appointmentModel.setCategories(getCategoryStrings(appointment));
+            appointmentModel.setMyResponseType(appointment.getMyResponseType());
 
             appointmentModels.add(appointmentModel);
         }
