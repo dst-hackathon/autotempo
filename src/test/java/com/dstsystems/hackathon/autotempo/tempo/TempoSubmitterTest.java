@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.tempo;
 
+import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -22,7 +23,6 @@ import static org.mockito.Mockito.doReturn;
 public class TempoSubmitterTest {
 
     private TempoSubmitter tempoSubmitter;
-    private TempoConfig tempoConfig;
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8111);
@@ -32,12 +32,12 @@ public class TempoSubmitterTest {
         // Set timezone for CI server
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
 
-        tempoConfig = new TempoConfig();
-        tempoConfig.setUrl("http://localhost:8111/");
-        tempoConfig.setUsername("myjirauser");
-        tempoConfig.setPassword("myjirapassword");
+        UserProfileModel userProfile = new UserProfileModel();
+        userProfile.setURL("http://localhost:8111/");
+        userProfile.setUserName("myjirauser");
+        userProfile.setPassword("myjirapassword");
 
-        tempoSubmitter = Mockito.spy(new TempoSubmitter(tempoConfig));
+        tempoSubmitter = Mockito.spy(new TempoSubmitter(userProfile));
     }
 
     @After

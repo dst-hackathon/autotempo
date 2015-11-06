@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.tempo;
 
+import com.dstsystems.hackathon.autotempo.models.UserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoAuthor;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoIssue;
@@ -31,10 +32,10 @@ public class TempoSubmitter {
     private static final String REST_WORKLOG_PATH = "/rest/tempo-timesheets/3/worklogs/";
     private static final String TIME_TRACKING_FIELD = "?fields=timetracking";
 
-    private TempoConfig tempoConfig;
+    private UserProfileModel userProfile;
 
-    public TempoSubmitter(TempoConfig tempoConfig) {
-        this.tempoConfig = tempoConfig;
+    public TempoSubmitter(UserProfileModel userProfile) {
+        this.userProfile = userProfile;
     }
 
     public void submitWorklog(WorklogModel worklogModel) throws IOException {
@@ -49,7 +50,7 @@ public class TempoSubmitter {
         tempoWorklog.setTimeSpentSeconds(worklogModel.getTimeSpent());
 
         TempoAuthor tempoAuthor = new TempoAuthor();
-        tempoAuthor.setName(tempoConfig.getUsername());
+        tempoAuthor.setName(userProfile.getUserName());
         tempoWorklog.setAuthor(tempoAuthor);
 
         TempoIssue tempoIssue = new TempoIssue();
@@ -67,7 +68,7 @@ public class TempoSubmitter {
     }
 
     protected long getRemainingEstimate(String issueKey) throws IOException {
-        HttpGet httpGet = new HttpGet(tempoConfig.getUrl() + REST_ISSUE_PATH + issueKey + TIME_TRACKING_FIELD);
+        HttpGet httpGet = new HttpGet(userProfile.getURL() + REST_ISSUE_PATH + issueKey + TIME_TRACKING_FIELD);
         String issueJson = sendHttpRequest(httpGet);
 
         JsonNode jsonNode = new ObjectMapper().readTree(issueJson);
@@ -85,9 +86,9 @@ public class TempoSubmitter {
     }
 
     private String postWorklog(String content) throws IOException {
-        HttpPost httpPost = new HttpPost(tempoConfig.getUrl() + REST_WORKLOG_PATH);
+        HttpPost httpPost = new HttpPost(userProfile.getURL() + REST_WORKLOG_PATH);
         httpPost.setHeader("Content-Type", "application/json");
-        httpPost.setHeader("Origin", tempoConfig.getUrl()); // Required for JIRA cloud instances
+        httpPost.setHeader("Origin", userProfile.getURL()); // Required for JIRA cloud instances
         httpPost.setEntity(new StringEntity(content));
 
         return sendHttpRequest(httpPost);
@@ -99,7 +100,7 @@ public class TempoSubmitter {
 
         try {
             Credentials credentials = new UsernamePasswordCredentials(
-                    tempoConfig.getUsername(), tempoConfig.getPassword());
+                    userProfile.getUserName(), userProfile.getPassword());
             request.addHeader(new BasicScheme().authenticate(credentials, request, null));
 
             httpClient = HttpClientBuilder.create().build();
