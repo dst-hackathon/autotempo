@@ -1,4 +1,6 @@
 language: java
+# Skip unneeded mvn install before running test (causes warning with maven-shade-plugin)
+install: /bin/true
 script: mvn package -B
 cache:
   directories:
