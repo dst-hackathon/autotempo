@@ -19,7 +19,7 @@ public class AutoTempoApp {
     public static final String DEFAULT_USER_PROFILE_PATH = "/user.profile";
 
     private static Date generateDateFromString(String dateInString ) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
         try {
             date = sdf.parse(dateInString);
@@ -45,8 +45,8 @@ public class AutoTempoApp {
         System.out.println("ExchangeUserProfile loaded");
         TempoUserProfileModel tempoUserProfileModel = userProfileService.getTempoUserProfile(userProfilePath);
         System.out.println("TempoUserProfile loaded");
-        Date startDate = generateDateFromString( "11/07/2015" );
-        Date endDate = generateDateFromString( "11/07/2015" );
+        Date startDate = generateDateFromString( "11/07/2015 00:00:01" );
+        Date endDate = generateDateFromString( "11/07/2015 23:59:59" );
         try {
 
             List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(xchangeUserProfile, startDate, endDate);
