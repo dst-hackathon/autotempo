@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import java.util.TimeZone;
+
 public class TempoSubmitterTest {
 
     private TempoSubmitter tempoSubmitter;
@@ -14,6 +16,9 @@ public class TempoSubmitterTest {
 
     @Before
     public void setUp() throws Exception {
+        // Set timezone for CI server
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
+
         tempoConfig = new TempoConfig();
         tempoConfig.setUrl("http://localhost/");
         tempoConfig.setUsername("myjirauser");
