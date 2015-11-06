@@ -1,7 +1,10 @@
 language: java
-script: mvn package
+script: mvn package -B
 jdk:
-- openjdk7
+  - openjdk7
+before_deploy:
+  - mkdir deploy
+  - cp target/autotempo*.jar deploy
 deploy:
   provider: gcs
   access_key_id: GOOGZXMX32D6S4DIL7XD
@@ -13,5 +16,5 @@ deploy:
     repo: dst-hackathon/autotempo
   skip_cleanup: true
   acl: public-read
-  local-dir: target
+  local-dir: deploy
   upload-dir: autotempo
