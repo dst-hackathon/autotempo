@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import java.io.IOException;
 import java.util.TimeZone;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -55,8 +56,21 @@ public class TempoSubmitterTest {
                         .withBody("test response")));
 
         tempoSubmitter.submitWorklog(worklogModel);
+    }
 
-        verify();
+    @Test(expected = IOException.class)
+    public void testSubmitWorklogCaseError() throws Exception {
+        WorklogModel worklogModel = new WorklogModel();
+        doReturn("test json").when(tempoSubmitter).getWorklogJson(worklogModel);
+
+        stubFor(post(urlEqualTo("/rest/tempo-timesheets/3/worklogs/"))
+                .withRequestBody(equalTo("test json"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("test response")));
+
+        tempoSubmitter.submitWorklog(worklogModel);
     }
 
     @Test
