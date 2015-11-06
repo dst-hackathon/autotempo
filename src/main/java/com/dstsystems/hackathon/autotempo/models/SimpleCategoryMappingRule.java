@@ -26,7 +26,7 @@ public class SimpleCategoryMappingRule implements Rule{
     {
         worklog.setAccountKey(this.getAccountKey());
         worklog.setIssueKey(this.getIssueKey());
-        worklog.setComment(this.comment);
+        worklog.setComment(this.getComment());
     }
 
     public String getIssueKey() {
