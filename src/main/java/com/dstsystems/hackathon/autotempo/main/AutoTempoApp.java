@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by user on 06/11/2015.
  */
-public class Main {
+public class AutoTempoApp {
 
     public static final String DEFAULT_USER_PROFILE_PATH = "/user.profile";
 
