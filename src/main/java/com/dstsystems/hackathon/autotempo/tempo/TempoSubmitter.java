@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -31,7 +32,7 @@ public class TempoSubmitter {
 
     public void submitWorklog(WorklogModel worklogModel) throws IOException {
         String worklogJson = getWorklogJson(worklogModel);
-        sendHttpRequest(worklogJson);
+        postWorklog(worklogJson);
     }
 
     protected String getWorklogJson(WorklogModel worklogModel) throws JsonProcessingException {
@@ -57,18 +58,22 @@ public class TempoSubmitter {
         return new ObjectMapper().writeValueAsString(tempoWorklog);
     }
 
-    private String sendHttpRequest(String content) throws IOException {
+    private String postWorklog(String content) throws IOException {
+        HttpPost httpPost = new HttpPost(tempoConfig.getUrl() + REST_WORKLOG_PATH);
+        httpPost.setHeader("Content-Type", "application/json");
+        httpPost.setHeader("Origin", tempoConfig.getUrl()); // Required for JIRA cloud instances
+        httpPost.setEntity(new StringEntity(content));
+
+        return sendHttpRequest(httpPost);
+    }
+
+    private String sendHttpRequest(HttpUriRequest request) throws IOException {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
 
         try {
             httpClient = HttpClientBuilder.create().build();
-            HttpPost httpPost = new HttpPost(tempoConfig.getUrl() + REST_WORKLOG_PATH);
-            httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setHeader("Origin", tempoConfig.getUrl()); // Required for JIRA cloud instances
-            httpPost.setEntity(new StringEntity(content));
-
-            response = httpClient.execute(httpPost);
+            response = httpClient.execute(request);
 
             int httpStatus = response.getStatusLine().getStatusCode();
             if (httpStatus != 200) {
