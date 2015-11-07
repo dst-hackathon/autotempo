@@ -12,26 +12,19 @@ import static org.junit.Assert.assertEquals;
  */
 public class UserProfileServiceImplTest {
 
-    ExchangeUserProfileModel exchangeUserProfileModel;
-    TempoUserProfileModel tempoUserProfileModel;
+    private ExchangeUserProfileModel exchangeUserProfileModel;
+    private TempoUserProfileModel tempoUserProfileModel;
 
     @Before
-    public void setupExchangeUserProfile() {
+    public void setUp() {
         UserProfileServiceImpl service = new UserProfileServiceImpl();
-
         exchangeUserProfileModel = service.getExchangeUserProfile("src/test/resources/user.profile");
-    }
-
-    @Before
-    public void setupTempoUserProfile() {
-        UserProfileServiceImpl service = new UserProfileServiceImpl();
-
         tempoUserProfileModel = service.getTempoUserProfile("src/test/resources/user.profile");
     }
 
     @Test
-    public void testExchangeUserName() {
-        assertEquals("dt66277", exchangeUserProfileModel.getUsername());
+    public void testExchangeUsername() {
+        assertEquals("exchange user", exchangeUserProfileModel.getUsername());
     }
 
     @Test
@@ -45,18 +38,18 @@ public class UserProfileServiceImplTest {
     }
 
     @Test
-    public void testTempoUserName() {
-        assertEquals("admin2", tempoUserProfileModel.getUsername());
+    public void testTempoUsername() {
+        assertEquals("tempo user", tempoUserProfileModel.getUsername());
     }
 
     @Test
     public void testTempoPassword() {
-        assertEquals("dsthackathon#999", tempoUserProfileModel.getPassword());
+        assertEquals("tempo password", tempoUserProfileModel.getPassword());
     }
 
     @Test
     public void testTempoURL() {
-        assertEquals("https://autotempotest.atlassian.net/", tempoUserProfileModel.getURL());
+        assertEquals("tempo URL", tempoUserProfileModel.getURL());
     }
 
 }
