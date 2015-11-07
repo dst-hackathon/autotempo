@@ -1,7 +1,6 @@
-package com.dstsystems.hackathon.autotempo.service;
+package com.dstsystems.hackathon.autotempo.filter;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
-import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import microsoft.exchange.webservices.data.core.enumeration.property.MeetingResponseType;
 import org.junit.Test;
 
