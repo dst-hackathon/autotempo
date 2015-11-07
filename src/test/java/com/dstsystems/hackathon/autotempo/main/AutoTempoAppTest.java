@@ -32,13 +32,13 @@ public class AutoTempoAppTest {
         AppointmentModel appointment2 = new AppointmentModel();
         List<AppointmentModel> appointments = Arrays.asList(appointment1, appointment2);
 
-        doThrow(new IOException()).when(autoTempoApp).logAppointment(eq(appointment1), any(RuleSet.class));
-        doNothing().when(autoTempoApp).logAppointment(eq(appointment2), any(RuleSet.class));
+        doThrow(new IOException()).when(autoTempoApp).logAppointment(appointment1);
+        doNothing().when(autoTempoApp).logAppointment(appointment2);
 
-        autoTempoApp.logAppointments(appointments, null);
+        autoTempoApp.logAppointments(appointments);
 
-        verify(autoTempoApp).logAppointment(appointment1, null);
-        verify(autoTempoApp).logAppointment(appointment2, null);
+        verify(autoTempoApp).logAppointment(appointment1);
+        verify(autoTempoApp).logAppointment(appointment2);
     }
 
     @Test

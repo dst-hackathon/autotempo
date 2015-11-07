@@ -25,6 +25,7 @@ public class AutoTempoApp {
     private CommandLineArguments parsedArgs;
     private AppointmentService appointmentService;
     private UserProfileService userProfileService;
+    private RuleSet ruleSet;
     private FirstMatchRuleSetProcessor ruleSetProcessor;
     private TempoSubmitter tempoSubmitter;
 
@@ -51,14 +52,9 @@ public class AutoTempoApp {
             List<AppointmentModel> appointmentList = fetchAppointments();
             filterAppointments(appointmentList);
 
-            RuleSetLoader ruleSetLoader = new RuleSetLoader();
-
-            RuleSet ruleSet = ruleSetLoader.getRuleSet(parsedArgs.getRulePath());
-            System.out.println("Loaded rule set");
-
-            logAppointments(appointmentList, ruleSet);
+            logAppointments(appointmentList);
         } catch (Exception e) {
-            System.out.println("An unknown error has occurred:");
+            System.err.println("An unknown error has occurred:");
             e.printStackTrace();
         }
     }
@@ -78,7 +74,7 @@ public class AutoTempoApp {
         return parsedArgs;
     }
 
-    private void initServices() throws IOException {
+    private void initServices() throws Exception {
         userProfileService = new UserProfileServiceImpl();
 
         if (StringUtils.isEmpty(parsedArgs.getJsonPath())) {
@@ -99,6 +95,10 @@ public class AutoTempoApp {
             tempoSubmitter.setDry(true);
             System.out.println("Performing dry run. Worklogs will not be created.");
         }
+
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();
+        ruleSet = ruleSetLoader.getRuleSet(parsedArgs.getRulePath());
+        System.out.println("Loaded rule set");
     }
 
     private List<AppointmentModel> fetchAppointments() throws Exception {
@@ -120,17 +120,17 @@ public class AutoTempoApp {
         System.out.println("No conflicts found");
     }
 
-    protected void logAppointments(List<AppointmentModel> appointmentList, RuleSet ruleSet) throws IOException {
+    protected void logAppointments(List<AppointmentModel> appointmentList) throws IOException {
         for (AppointmentModel appointmentModel : appointmentList) {
             try {
-                logAppointment(appointmentModel, ruleSet);
+                logAppointment(appointmentModel);
             } catch (IOException e) {
                 System.out.println("Unable to log " + appointmentModel + ". " + e.getMessage());
             }
         }
     }
 
-    protected void logAppointment(AppointmentModel appointmentModel, RuleSet ruleSet) throws IOException {
+    protected void logAppointment(AppointmentModel appointmentModel) throws IOException {
         WorklogModel worklogModel = new WorklogModel();
 
         if (ruleSetProcessor.process(worklogModel, appointmentModel, ruleSet)) {
