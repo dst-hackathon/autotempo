@@ -9,9 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <!-- Main -->
+        <!-- Build -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
 
+        <!-- Main -->
         <ews-java-api.version>2.0</ews-java-api.version>
         <jackson.version>2.6.3</jackson.version>
         <commons-io.version>2.4</commons-io.version>
