@@ -50,4 +50,15 @@ public class WorklogModel {
         this.date = date;
     }
 
+    @Override
+    public String toString() {
+        return "WorklogModel{" +
+                "issueKey='" + issueKey + '\'' +
+                ", comment='" + comment + '\'' +
+                ", accountKey='" + accountKey + '\'' +
+                ", timeSpent=" + timeSpent +
+                ", date=" + date +
+                '}';
+    }
+
 }

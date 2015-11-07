@@ -17,7 +17,7 @@ public class AutoTempoApp {
 
     public static final String DEFAULT_USER_PROFILE_PATH = "/user.profile";
 
-    private static Date generateDateFromString(String dateInString ) {
+    private static Date generateDateFromString(String dateInString) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
         try {
@@ -44,8 +44,8 @@ public class AutoTempoApp {
         System.out.println("ExchangeUserProfile loaded");
         TempoUserProfileModel tempoUserProfileModel = userProfileService.getTempoUserProfile(userProfilePath);
         System.out.println("TempoUserProfile loaded");
-        Date startDate = generateDateFromString( "11/07/2015 00:00:01" );
-        Date endDate = generateDateFromString( "11/07/2015 23:59:59" );
+        Date startDate = generateDateFromString("11/07/2015 00:00:01");
+        Date endDate = generateDateFromString("11/07/2015 23:59:59");
 
         try {
             List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(exchangeUserProfile, startDate, endDate);
@@ -70,11 +70,7 @@ public class AutoTempoApp {
                     WorklogHelper.populateCommon(worklogModel, appointmentModel);
                     worklogModel.setComment(appointmentModel.getSubject());
 
-                    System.out.println(worklogModel.getAccountKey());
-                    System.out.println(worklogModel.getComment());
-                    System.out.println(worklogModel.getIssueKey());
-                    System.out.println(worklogModel.getDate());
-                    System.out.println(worklogModel.getTimeSpent());
+                    System.out.println(worklogModel);
 
                     new TempoSubmitter(tempoUserProfileModel).submitWorklog(worklogModel);
                     System.out.println(worklogModel.getIssueKey() + " has been logged on " + worklogModel.getDate().toString() + " with time = " + worklogModel.getTimeSpent() + ".");
