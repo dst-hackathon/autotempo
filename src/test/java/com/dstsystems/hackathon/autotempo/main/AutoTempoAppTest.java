@@ -22,7 +22,7 @@ public class AutoTempoAppTest {
         Date date = DateTestUtils.buildDate("2015-11-02");
         Date startDateTime = autoTempoApp.getStartDateTime(date);
 
-        assertEquals(DateTestUtils.buildDateTime("2015-11-02 00:00:00"), startDateTime);
+        assertEquals(DateTestUtils.buildDateTime("2015-11-02 00:00:01"), startDateTime);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class AutoTempoAppTest {
         Date date = DateTestUtils.buildDateTime("2015-11-02 13:00");
         Date startDateTime = autoTempoApp.getStartDateTime(date);
 
-        assertEquals(DateTestUtils.buildDateTime("2015-11-02 00:00:00"), startDateTime);
+        assertEquals(DateTestUtils.buildDateTime("2015-11-02 00:00:01"), startDateTime);
     }
 
     @Test

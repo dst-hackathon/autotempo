@@ -139,7 +139,7 @@ public class AutoTempoApp {
         c.setTime(date);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.SECOND, 1); // Note: we can't use 0 since it will pick up yesterday's "all day"
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     }
