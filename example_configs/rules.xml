@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RuleSet>
+    <!-- Rules which appear first take precedence -->
+    <SimpleCategoryMappingRule>
+        <category>training</category>
+        <issueKey>INT-5</issueKey>
+        <accountKey>YC02</accountKey>
+        <comment>Training</comment>
+    </SimpleCategoryMappingRule>
+    <SubjectSensitiveMappingRule>
+        <subjectWord>Developer Meeting</subjectWord>
+        <issueKey>PKT-2151</issueKey>
+        <accountKey>YC01</accountKey>
+    </SubjectSensitiveMappingRule>
+</RuleSet>
