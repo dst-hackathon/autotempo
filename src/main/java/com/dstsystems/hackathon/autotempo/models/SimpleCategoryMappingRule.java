@@ -35,7 +35,11 @@ public class SimpleCategoryMappingRule extends Rule{
     @Override
     public boolean isMatch(AppointmentModel appointment) {
         if (appointment != null && appointment.getCategories() != null && !appointment.getCategories().isEmpty()) {
-            return appointment.getCategories().contains(category);
+            for (String appointmentCategory : appointment.getCategories()) {
+                if (category.equalsIgnoreCase(appointmentCategory)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

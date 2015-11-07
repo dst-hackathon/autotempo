@@ -29,6 +29,15 @@ public class SimpleCategoryMappingRuleTest {
     }
 
     @Test
+    public void thatValidCategoryShouldMatchCaseInsensitive() throws Exception {
+        WorklogModel worklog = new WorklogModel();
+        AppointmentModel appointmentModel = new AppointmentModel();
+        appointmentModel.setCategories(Arrays.asList("Training"));
+
+        assertTrue(rule.isMatch(appointmentModel));
+    }
+
+    @Test
     public void thatInvalidCatagotyShouldNotMatch() throws Exception {
         WorklogModel worklog = new WorklogModel();
         AppointmentModel appointmentModel = new AppointmentModel();
