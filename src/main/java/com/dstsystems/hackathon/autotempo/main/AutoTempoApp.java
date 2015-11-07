@@ -97,7 +97,7 @@ public class AutoTempoApp {
 
         if (parsedArgs.getDry()) {
             tempoSubmitter.setDry(true);
-            System.out.println("Performign dry run. Worklogs will not be created.");
+            System.out.println("Performing dry run. Worklogs will not be created.");
         }
     }
 
