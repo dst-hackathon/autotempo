@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.filter;
 
+import com.dstsystems.hackathon.autotempo.exception.AppointmentInputException;
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 public class ConflictAppointmentListFilter implements AppointmentListFilter {
 
     @Override
-    public void filter(List<AppointmentModel> appointments) {
+    public void filter(List<AppointmentModel> appointments) throws AppointmentInputException {
         // Sort by start time
         List<AppointmentModel> sortedAppointments = new ArrayList<>();
         sortedAppointments.addAll(appointments);
@@ -27,7 +28,8 @@ public class ConflictAppointmentListFilter implements AppointmentListFilter {
             AppointmentModel next = sortedAppointments.get(i + 1);
 
             if (next.getStart().compareTo(cur.getEnd()) < 0) {
-                throw new RuntimeException("Appointment " + cur + " conflicts with " + next);
+                throw new AppointmentInputException("Appointment \"" + cur.getSubject() + "\" conflicts with \""
+                        + next.getSubject() + "\". Please resolve the conflict and try again.");
             }
         }
     }

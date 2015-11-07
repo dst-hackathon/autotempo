@@ -1,6 +1,6 @@
 package com.dstsystems.hackathon.autotempo.service;
 
-import com.dstsystems.hackathon.autotempo.exception.AppointmentException;
+import com.dstsystems.hackathon.autotempo.exception.AppointmentServiceException;
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
 import microsoft.exchange.webservices.data.core.ExchangeService;
@@ -28,7 +28,7 @@ public class ExchangeAppointmentService implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentModel> getAppointments(Date start, Date end) throws AppointmentException {
+    public List<AppointmentModel> getAppointments(Date start, Date end) throws AppointmentServiceException {
         try {
             WebCredentials webCredentials = new WebCredentials(userProfile.getUsername(), userProfile.getPassword());
 
@@ -56,7 +56,7 @@ public class ExchangeAppointmentService implements AppointmentService {
 
             return appointmentModels;
         } catch (Exception e) {
-            throw new AppointmentException(e);
+            throw new AppointmentServiceException(e);
         }
     }
 

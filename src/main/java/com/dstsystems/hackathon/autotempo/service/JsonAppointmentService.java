@@ -1,6 +1,6 @@
 package com.dstsystems.hackathon.autotempo.service;
 
-import com.dstsystems.hackathon.autotempo.exception.AppointmentException;
+import com.dstsystems.hackathon.autotempo.exception.AppointmentServiceException;
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,13 +22,13 @@ public class JsonAppointmentService implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentModel> getAppointments(Date start, Date end) throws AppointmentException {
+    public List<AppointmentModel> getAppointments(Date start, Date end) throws AppointmentServiceException {
         try {
             File jsonFile = new File(jsonPath);
             return new ObjectMapper().readValue(jsonFile, new TypeReference<List<AppointmentModel>>() {
             });
         } catch (IOException e) {
-            throw new AppointmentException(e);
+            throw new AppointmentServiceException(e);
         }
     }
 

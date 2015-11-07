@@ -2,9 +2,10 @@ package com.dstsystems.hackathon.autotempo.main;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import com.dstsystems.hackathon.autotempo.exception.AppointmentException;
-import com.dstsystems.hackathon.autotempo.exception.ConfigurationException;
+import com.dstsystems.hackathon.autotempo.exception.AppointmentInputException;
+import com.dstsystems.hackathon.autotempo.exception.AppointmentServiceException;
 import com.dstsystems.hackathon.autotempo.exception.HttpStatusException;
+import com.dstsystems.hackathon.autotempo.exception.UserFriendlyException;
 import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.AppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
@@ -62,9 +63,9 @@ public class AutoTempoApp {
             filterAppointments(appointmentList);
 
             logAppointments(appointmentList);
-        } catch (ConfigurationException e) {
+        } catch (UserFriendlyException e) {
             System.err.println(e.getMessage());
-        } catch (AppointmentException e) {
+        } catch (AppointmentServiceException e) {
             e.printStackTrace();
             System.err.println();
             System.err.println("Unable to fetch calendar from Exchange. Please check your Exchange username, " +
@@ -147,7 +148,7 @@ public class AutoTempoApp {
         return appointmentList;
     }
 
-    private void filterAppointments(List<AppointmentModel> appointmentList) {
+    private void filterAppointments(List<AppointmentModel> appointmentList) throws AppointmentInputException {
         for (AppointmentListFilter filter : appointmentListFilters) {
             filter.filter(appointmentList);
         }
