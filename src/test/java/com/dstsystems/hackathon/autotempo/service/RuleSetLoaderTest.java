@@ -37,6 +37,9 @@ public class RuleSetLoaderTest {
         assertEquals(SubjectSensitiveMappingRule.class, ruleList.get(2).getClass());
         SubjectSensitiveMappingRule subjectRule = (SubjectSensitiveMappingRule) ruleList.get(2);
         assertEquals("important", subjectRule.getSubjectWord());
+        assertEquals("INT-3", subjectRule.getIssueKey());
+        assertEquals("account3", subjectRule.getAccountKey());
+        assertEquals("Important Stuff", subjectRule.getComment());
     }
 
 }

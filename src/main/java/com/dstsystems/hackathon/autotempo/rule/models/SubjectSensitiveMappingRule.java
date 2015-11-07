@@ -8,28 +8,42 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by dst on 11/6/2015 AD.
+ * Appointment Subject based Worklog mapping rule
+ * <p>
+ * The rule can map the given word within appointment subject to the configured worklog issue id, account and fixed comment
+ *
+ * @author Tank
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SubjectSensitiveMappingRule extends Rule {
     private String subjectWord;
-    @Override
-    public boolean isMatch(AppointmentModel model) {
-        return false;
-    }
-
-    @Override
-    public void populateWorkingModel(WorklogModel working, AppointmentModel appointment) {
-
-    }
+    private String issueKey;
+    private String accountKey;
+    private String comment;
 
     @Override
     public String toString() {
         return "SubjectSensitiveMappingRule{" +
                 "subjectWord='" + subjectWord + '\'' +
+                ", issueKey='" + issueKey + '\'' +
+                ", accountKey='" + accountKey + '\'' +
+                ", comment='" + comment + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean isMatch(AppointmentModel appointment) {
+        return appointment.getSubject().contains(getSubjectWord());
+    }
+
+    @Override
+    public void populateWorkingModel(WorklogModel worklog, AppointmentModel appointment) {
+        worklog.setAccountKey(this.getAccountKey());
+        worklog.setIssueKey(this.getIssueKey());
+        worklog.setComment(this.getComment());
+    }
+
 
     public String getSubjectWord() {
         return subjectWord;
@@ -40,4 +54,27 @@ public class SubjectSensitiveMappingRule extends Rule {
     }
 
 
+    public String getIssueKey() {
+        return issueKey;
+    }
+
+    public void setIssueKey(String issueKey) {
+        this.issueKey = issueKey;
+    }
+
+    public String getAccountKey() {
+        return accountKey;
+    }
+
+    public void setAccountKey(String accountKey) {
+        this.accountKey = accountKey;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

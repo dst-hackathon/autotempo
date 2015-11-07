@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Simple Category based Worklog mapping rule
- *
+ * <p>
  * The rule can map the given appointment category to the configured worklog issue id, account and fixed comment
  *
  * @author Tank
@@ -17,10 +17,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleCategoryMappingRule extends Rule{
+public class SimpleCategoryMappingRule extends Rule {
     private String category;
     private String issueKey;
     private String accountKey;
+    private String comment;
 
     @Override
     public String toString() {
@@ -31,8 +32,6 @@ public class SimpleCategoryMappingRule extends Rule{
                 ", comment='" + comment + '\'' +
                 '}';
     }
-
-    private String comment;
 
     @Override
     public boolean isMatch(AppointmentModel appointment) {
@@ -47,8 +46,7 @@ public class SimpleCategoryMappingRule extends Rule{
     }
 
     @Override
-    public void populateWorkingModel(WorklogModel worklog, AppointmentModel appointment)
-    {
+    public void populateWorkingModel(WorklogModel worklog, AppointmentModel appointment) {
         worklog.setAccountKey(this.getAccountKey());
         worklog.setIssueKey(this.getIssueKey());
         worklog.setComment(this.getComment());

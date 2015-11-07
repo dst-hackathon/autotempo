@@ -14,6 +14,9 @@
     </SimpleCategoryMappingRule>
     <SubjectSensitiveMappingRule>
         <subjectWord>important</subjectWord>
+        <issueKey>INT-3</issueKey>
+        <accountKey>account3</accountKey>
+        <comment>Important Stuff</comment>
     </SubjectSensitiveMappingRule>
 </RuleSet>
 
