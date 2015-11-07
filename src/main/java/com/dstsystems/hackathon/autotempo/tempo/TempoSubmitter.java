@@ -27,7 +27,7 @@ import java.util.List;
 
 public class TempoSubmitter {
 
-    private static final String ACCOUNT_ATTRIBUTE = "_account_";
+    private static final String ACCOUNT_ATTRIBUTE = "_Account_";
     private static final String REST_ISSUE_PATH = "/rest/api/2/issue/";
     private static final String REST_WORKLOG_PATH = "/rest/tempo-timesheets/3/worklogs/";
     private static final String TIME_TRACKING_FIELD = "?fields=timetracking";
