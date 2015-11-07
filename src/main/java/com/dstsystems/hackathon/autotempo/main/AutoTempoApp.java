@@ -8,6 +8,7 @@ import com.dstsystems.hackathon.autotempo.exception.HttpStatusException;
 import com.dstsystems.hackathon.autotempo.exception.UserFriendlyException;
 import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.AppointmentListFilter;
+import com.dstsystems.hackathon.autotempo.filter.CanceledAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
@@ -50,6 +51,7 @@ public class AutoTempoApp {
 
         appointmentListFilters = new ArrayList<>();
         appointmentListFilters.add(new AcceptedAppointmentListFilter());
+        appointmentListFilters.add(new CanceledAppointmentListFilter());
         appointmentListFilters.add(new ConflictAppointmentListFilter());
     }
 
