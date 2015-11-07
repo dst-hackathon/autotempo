@@ -13,7 +13,6 @@ public class CommandLineArguments {
     @Parameter(names = "-rule", description = "Path to rule configuration")
     private String rulePath = "rules.xml";
 
-    // TODO: Date format??
     @Parameter(names = "-date", description = "Date to log (default: today's date)")
     private Date date = Calendar.getInstance().getTime();
 
