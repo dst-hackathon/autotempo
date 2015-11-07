@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.main;
 
+import com.dstsystems.hackathon.autotempo.exception.HttpStatusException;
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
 import org.junit.Test;
@@ -8,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -24,18 +24,30 @@ public class AutoTempoAppTest {
     private AutoTempoApp autoTempoApp;
 
     @Test
-    public void testLogAppointments() throws Exception {
+    public void testLogAppointmentsKnownException() throws Exception {
         AppointmentModel appointment1 = new AppointmentModel();
         AppointmentModel appointment2 = new AppointmentModel();
         List<AppointmentModel> appointments = Arrays.asList(appointment1, appointment2);
 
-        doThrow(new IOException()).when(autoTempoApp).logAppointment(appointment1);
+        doThrow(new HttpStatusException("", 400)).when(autoTempoApp).logAppointment(appointment1);
         doNothing().when(autoTempoApp).logAppointment(appointment2);
 
         autoTempoApp.logAppointments(appointments);
 
         verify(autoTempoApp).logAppointment(appointment1);
         verify(autoTempoApp).logAppointment(appointment2);
+    }
+
+    @Test(expected = WorklogException.class)
+    public void testLogAppointmentsUnknownException() throws Exception {
+        AppointmentModel appointment1 = new AppointmentModel();
+        AppointmentModel appointment2 = new AppointmentModel();
+        List<AppointmentModel> appointments = Arrays.asList(appointment1, appointment2);
+
+        doThrow(new HttpStatusException("", 404)).when(autoTempoApp).logAppointment(appointment1);
+        doNothing().when(autoTempoApp).logAppointment(appointment2);
+
+        autoTempoApp.logAppointments(appointments);
     }
 
     @Test
