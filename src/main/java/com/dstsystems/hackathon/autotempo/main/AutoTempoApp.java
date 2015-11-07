@@ -2,7 +2,9 @@ package com.dstsystems.hackathon.autotempo.main;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import com.dstsystems.hackathon.autotempo.exception.AppointmentException;
 import com.dstsystems.hackathon.autotempo.exception.ConfigurationException;
+import com.dstsystems.hackathon.autotempo.exception.HttpStatusException;
 import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.AppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
@@ -17,6 +19,7 @@ import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.service.*;
 import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,9 +64,28 @@ public class AutoTempoApp {
             logAppointments(appointmentList);
         } catch (ConfigurationException e) {
             System.err.println(e.getMessage());
-        } catch (Exception e) {
-            System.err.println("An unknown error has occurred:");
+        } catch (AppointmentException e) {
             e.printStackTrace();
+            System.err.println();
+            System.err.println("Unable to fetch calendar from Exchange. Please check your Exchange username, " +
+                    "password and URL in the configuration file.");
+        } catch (WorklogException e) {
+            if (e.getCause() instanceof HttpStatusException
+                    && ((HttpStatusException) e.getCause()).getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+                e.printStackTrace();
+                System.err.println();
+                System.err.println("Unable to authenticate with Tempo. Please check your Tempo username and password " +
+                        "in the configuration file.");
+            } else {
+                e.printStackTrace();
+                System.err.println();
+                System.err.println("Unable to connect to Tempo. Please check your Tempo username, password and URL " +
+                        "in the configuration file.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println();
+            System.err.println("An unknown error has occurred.");
         }
     }
 
@@ -132,12 +154,18 @@ public class AutoTempoApp {
         System.out.println("Appointments filtered: " + appointmentList.size() + " appointments remaining");
     }
 
-    protected void logAppointments(List<AppointmentModel> appointmentList) throws IOException {
+    protected void logAppointments(List<AppointmentModel> appointmentList) throws IOException, WorklogException {
         for (AppointmentModel appointmentModel : appointmentList) {
             try {
                 logAppointment(appointmentModel);
-            } catch (IOException e) {
-                System.out.println("Unable to log " + appointmentModel + ". " + e.getMessage());
+            } catch (Exception e) {
+                if (e instanceof HttpStatusException
+                        && ((HttpStatusException) e).getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
+                    System.out.println("Unable to log " + appointmentModel + ". " + e.getMessage());
+                    // Continue with next appointment if this one cannot be logged due to Tempo error
+                } else {
+                    throw new WorklogException(e);
+                }
             }
         }
     }

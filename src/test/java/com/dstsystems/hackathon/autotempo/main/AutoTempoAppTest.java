@@ -1,7 +1,6 @@
 package com.dstsystems.hackathon.autotempo.main;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
-import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +13,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
