@@ -38,7 +38,7 @@ public class SubjectSensitiveMappingRule extends Rule {
             return false;
         }
 
-        String encodedSub = "(.)*" + getSubjectWord().toUpperCase().replaceAll("\\*", "(.)*" + "(.)*");
+        String encodedSub = "(.)*" + getSubjectWord().toUpperCase().replaceAll("\\*", "(.)*") + "(.)*";
         return appointment.getSubject().toUpperCase().matches(encodedSub);
     }
 

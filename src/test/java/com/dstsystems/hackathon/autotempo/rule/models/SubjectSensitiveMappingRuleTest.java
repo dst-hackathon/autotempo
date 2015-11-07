@@ -71,7 +71,7 @@ public class SubjectSensitiveMappingRuleTest {
     public void thatRuleWithWildcardSubjectShouldMatch() {
         WorklogModel worklog = new WorklogModel();
         AppointmentModel appointmentModel = new AppointmentModel();
-        appointmentModel.setSubject("[Important] AMS/BS Weekly PL - meeting");
+        appointmentModel.setSubject("[Important] AMS/BS Weekly PL - meeting xxxxxxx");
 
         rule.setSubjectWord("AMS*BS*PL - Meeting");
         assertTrue(rule.isMatch(appointmentModel));
