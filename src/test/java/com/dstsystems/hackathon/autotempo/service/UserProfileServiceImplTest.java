@@ -5,6 +5,8 @@ import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,14 +14,15 @@ import static org.junit.Assert.assertEquals;
  */
 public class UserProfileServiceImplTest {
 
+    private UserProfileServiceImpl userProfileService;
     private ExchangeUserProfileModel exchangeUserProfileModel;
     private TempoUserProfileModel tempoUserProfileModel;
 
     @Before
     public void setUp() throws Exception {
-        UserProfileServiceImpl service = new UserProfileServiceImpl();
-        exchangeUserProfileModel = service.getExchangeUserProfile("src/test/resources/user.profile");
-        tempoUserProfileModel = service.getTempoUserProfile("src/test/resources/user.profile");
+        userProfileService = new UserProfileServiceImpl();
+        exchangeUserProfileModel = userProfileService.getExchangeUserProfile("src/test/resources/user.profile");
+        tempoUserProfileModel = userProfileService.getTempoUserProfile("src/test/resources/user.profile");
     }
 
     @Test
@@ -50,6 +53,36 @@ public class UserProfileServiceImplTest {
     @Test
     public void testTempoURL() {
         assertEquals("tempo URL", tempoUserProfileModel.getURL());
+    }
+
+    @Test(expected = IOException.class)
+    public void testMissingExchangeUsername() throws Exception {
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_user.profile");
+    }
+
+    @Test(expected = IOException.class)
+    public void testMissingExchangePassword() throws Exception {
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_password.profile");
+    }
+
+    @Test(expected = IOException.class)
+    public void testMissingExchangeURL() throws Exception {
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_url.profile");
+    }
+
+    @Test(expected = IOException.class)
+    public void testMissingTempoUsername() throws Exception {
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_user.profile");
+    }
+
+    @Test(expected = IOException.class)
+    public void testMissingTempoPassword() throws Exception {
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_password.profile");
+    }
+
+    @Test(expected = IOException.class)
+    public void testMissingTempoURL() throws Exception {
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_url.profile");
     }
 
 }

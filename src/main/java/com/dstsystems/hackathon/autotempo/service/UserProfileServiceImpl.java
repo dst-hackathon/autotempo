@@ -18,6 +18,16 @@ public class UserProfileServiceImpl implements UserProfileService {
         userProfile.setPassword(properties.getProperty("exchange.password"));
         userProfile.setURL(properties.getProperty("exchange.URL"));
 
+        if (userProfile.getUsername() == null) {
+            throw new IOException("Unable to load Exchange username from configuration file");
+        }
+        if (userProfile.getPassword() == null) {
+            throw new IOException("Unable to load Exchange password from configuration file");
+        }
+        if (userProfile.getURL() == null) {
+            throw new IOException("Unable to load Exchange URL from configuration file");
+        }
+
         return userProfile;
     }
 
@@ -29,6 +39,16 @@ public class UserProfileServiceImpl implements UserProfileService {
         userProfile.setUsername(properties.getProperty("tempo.userName"));
         userProfile.setPassword(properties.getProperty("tempo.password"));
         userProfile.setURL(properties.getProperty("tempo.URL"));
+
+        if (userProfile.getUsername() == null) {
+            throw new IOException("Unable to load Tempo username from configuration file");
+        }
+        if (userProfile.getPassword() == null) {
+            throw new IOException("Unable to load Tempo password from configuration file");
+        }
+        if (userProfile.getURL() == null) {
+            throw new IOException("Unable to load Tempo URL from configuration file");
+        }
 
         return userProfile;
     }
