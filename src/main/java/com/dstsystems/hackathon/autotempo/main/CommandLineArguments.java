@@ -16,7 +16,7 @@ public class CommandLineArguments {
     @Parameter(names = "-date", description = "Date to log in YYYY-mm-dd format")
     private Date date = Calendar.getInstance().getTime();
 
-    @Parameter(names = "-dry", description = "Run without logging to tempo")
+    @Parameter(names = "-dry", description = "Run without logging to Tempo")
     private boolean dry;
 
     @Parameter(names = "-json", description = "Use JSON file instead of connecting to exchange (for debugging)", hidden = true)
