@@ -137,7 +137,7 @@ public class TempoSubmitterTest {
                 "    },\n" +
                 "    \"worklogAttributes\": [\n" +
                 "        {\n" +
-                "            \"key\": \"_account_\",\n" +
+                "            \"key\": \"_Account_\",\n" +
                 "            \"value\": \"ATT01\"\n" +
                 "        }\n" +
                 "    ]\n" +
