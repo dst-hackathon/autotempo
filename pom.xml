@@ -17,6 +17,7 @@
         <commons-io.version>2.4</commons-io.version>
         <commons-collections4.version>4.0</commons-collections4.version>
         <httpclient.version>4.5.1</httpclient.version>
+        <jcommander.version>1.48</jcommander.version>
 
         <!-- Test -->
         <junit.version>4.12</junit.version>
@@ -98,6 +99,12 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${httpclient.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>${jcommander.version}</version>
         </dependency>
 
         <!-- Test -->

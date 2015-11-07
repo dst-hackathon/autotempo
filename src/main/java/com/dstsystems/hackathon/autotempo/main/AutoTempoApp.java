@@ -1,5 +1,7 @@
 package com.dstsystems.hackathon.autotempo.main;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import com.dstsystems.hackathon.autotempo.models.*;
 import com.dstsystems.hackathon.autotempo.rule.FirstMatchRuleSetProcessor;
 import com.dstsystems.hackathon.autotempo.rule.RuleSetLoader;
@@ -9,9 +11,8 @@ import com.dstsystems.hackathon.autotempo.service.*;
 import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
+import org.apache.commons.lang3.StringUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,28 +22,37 @@ import java.util.List;
  */
 public class AutoTempoApp {
 
-    public static final String DEFAULT_USER_PROFILE_PATH = "/user.profile";
-
     public static void main(String[] args) {
-
-        //JsonAppointmentService appointmentService = new JsonAppointmentService();
-        AppointmentService appointmentService = new AppointmentServiceImpl();
-        UserProfileServiceImpl userProfileService = new UserProfileServiceImpl();
-
-        String userProfilePath = "src/test/resources/" + DEFAULT_USER_PROFILE_PATH;
-
-        if (args.length > 0 && args[0] != null) {
-            userProfilePath = args[0];
+        CommandLineArguments parsedArgs = new CommandLineArguments();
+        JCommander jCommander = new JCommander(parsedArgs);
+        try {
+            jCommander.parse(args);
+        } catch (ParameterException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.println();
+            jCommander.usage();
+            System.exit(1);
         }
 
-        ExchangeUserProfileModel exchangeUserProfile = userProfileService.getExchangeUserProfile(userProfilePath);
+        AppointmentService appointmentService;
+        if (StringUtils.isEmpty(parsedArgs.getJsonPath())) {
+            appointmentService = new AppointmentServiceImpl();
+        } else {
+            appointmentService = new JsonAppointmentService(parsedArgs.getJsonPath());
+        }
+
+        UserProfileServiceImpl userProfileService = new UserProfileServiceImpl();
+
+        ExchangeUserProfileModel exchangeUserProfile = userProfileService.getExchangeUserProfile(parsedArgs.getProfilePath());
         System.out.println("ExchangeUserProfile loaded");
-        TempoUserProfileModel tempoUserProfileModel = userProfileService.getTempoUserProfile(userProfilePath);
+        TempoUserProfileModel tempoUserProfileModel = userProfileService.getTempoUserProfile(parsedArgs.getProfilePath());
         System.out.println("TempoUserProfile loaded");
-        Date startDate = getStartDate();
-        Date endDate = getEndDate();
+
+        Date startDate = getStartDateTime(parsedArgs.getDate());
+        Date endDate = getEndDateTime(parsedArgs.getDate());
 
         try {
+            System.out.println("Fetching appointments from " + startDate + " to " + endDate);
             List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(exchangeUserProfile, startDate, endDate);
             System.out.println(appointmentList.size() + " Appointments Loaded");
             System.out.println(appointmentList);
@@ -55,14 +65,9 @@ public class AutoTempoApp {
             conflictAppointmentListFilter.filter(appointmentList);
             System.out.println("No conflicts found");
 
-            String rulePath = "src/main/resources/Rules.xml";
-            if (args.length > 1 && args[1] != null) {
-                rulePath = args[1];
-            }
-
             RuleSetLoader ruleSetLoader = new RuleSetLoader();
 
-            RuleSet ruleSet = ruleSetLoader.getRuleSet(rulePath);
+            RuleSet ruleSet = ruleSetLoader.getRuleSet(parsedArgs.getRulePath());
             System.out.println("SimpleRule set");
 
             for (AppointmentModel appointmentModel : appointmentList) {
@@ -84,8 +89,9 @@ public class AutoTempoApp {
 
     }
 
-    private static Date getStartDate() {
+    private static Date getStartDateTime(Date date) {
         Calendar c = Calendar.getInstance();
+        c.setTime(date);
         c.set(Calendar.HOUR, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
@@ -93,8 +99,9 @@ public class AutoTempoApp {
         return c.getTime();
     }
 
-    private static Date getEndDate() {
+    private static Date getEndDateTime(Date date) {
         Calendar c = Calendar.getInstance();
+        c.setTime(date);
         c.set(Calendar.HOUR, 23);
         c.set(Calendar.MINUTE, 59);
         c.set(Calendar.SECOND, 59);

@@ -14,10 +14,16 @@ import java.util.List;
  */
 public class JsonAppointmentService implements AppointmentService {
 
+    private String jsonPath;
+
+    public JsonAppointmentService(String jsonPath) {
+        this.jsonPath = jsonPath;
+    }
+
     @Override
     public List<AppointmentModel> downloadExchangeAppointments(
             ExchangeUserProfileModel userProfile, Date start, Date end) throws Exception {
-        File jsonFile = new File("src/main/resources/test_appointments.json");
+        File jsonFile = new File(jsonPath);
         return new ObjectMapper().readValue(jsonFile, new TypeReference<List<AppointmentModel>>(){});
     }
 

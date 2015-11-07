@@ -5,16 +5,20 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class JsonAppointmentServiceTest {
 
     @Test
     public void testDownloadExchangeAppointments() throws Exception {
-        // Just verify that we can read it for now
+        String jsonPath = "src/test/resources/test_appointments.json";
         List<AppointmentModel> appointmentModels =
-                new JsonAppointmentService().downloadExchangeAppointments(null, null, null);
-        assertNotNull(appointmentModels);
+                new JsonAppointmentService(jsonPath).downloadExchangeAppointments(null, null, null);
+
+        assertEquals(2, appointmentModels.size());
+        assertEquals("DST Hackathon", appointmentModels.get(0).getSubject());
+        assertEquals("Project", appointmentModels.get(1).getCategories().get(0));
     }
 
 }
