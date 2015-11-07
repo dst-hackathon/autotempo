@@ -2,7 +2,6 @@ package com.dstsystems.hackathon.autotempo.rule;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
-import com.dstsystems.hackathon.autotempo.rule.WorklogHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,16 +9,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-/**
- * Created by dst on 11/6/2015 AD.
- */
 public class WorklogHelperTest {
+
     @Before
     public void setUp() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
     }
+
     @Test
     public void testPopulateCommon() throws ParseException {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -32,8 +30,7 @@ public class WorklogHelperTest {
 
         assertEquals(10, worklog.getTimeSpent());
 
-        assertEquals("2013-10-10T00:00:00", fmt.format(worklog.getDate()) );
-
+        assertEquals("2013-10-10T00:00:10", fmt.format(worklog.getDate()) );
     }
 
     @Test
@@ -49,9 +46,8 @@ public class WorklogHelperTest {
 
         assertEquals(10, worklog.getTimeSpent());
 
-        assertEquals("2013-10-10T00:00:00", fmt.format(worklog.getDate()) );
+        assertEquals("2013-10-10T00:00:10", fmt.format(worklog.getDate()) );
         assertEquals("ELDS", worklog.getComment());
-
     }
 
     @Test
@@ -67,8 +63,8 @@ public class WorklogHelperTest {
 
         assertEquals(10, worklog.getTimeSpent());
 
-        assertEquals("2013-10-10T00:00:00", fmt.format(worklog.getDate()) );
+        assertEquals("2013-10-10T00:00:10", fmt.format(worklog.getDate()) );
         assertEquals("Working on issue INT-05", worklog.getComment());
-
     }
+
 }
