@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.service;
 
+import com.dstsystems.hackathon.autotempo.exception.ConfigurationException;
 import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 
@@ -10,7 +11,8 @@ import java.util.Properties;
 public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
-    public ExchangeUserProfileModel getExchangeUserProfile(String pathFileName) throws IOException {
+    public ExchangeUserProfileModel getExchangeUserProfile(String pathFileName)
+            throws ConfigurationException, IOException {
         Properties properties = readProperties(pathFileName);
 
         ExchangeUserProfileModel userProfile = new ExchangeUserProfileModel();
@@ -19,20 +21,21 @@ public class UserProfileServiceImpl implements UserProfileService {
         userProfile.setURL(properties.getProperty("exchange.URL"));
 
         if (userProfile.getUsername() == null) {
-            throw new IOException("Unable to load Exchange username from configuration file");
+            throw new ConfigurationException("Unable to load Exchange username from configuration file");
         }
         if (userProfile.getPassword() == null) {
-            throw new IOException("Unable to load Exchange password from configuration file");
+            throw new ConfigurationException("Unable to load Exchange password from configuration file");
         }
         if (userProfile.getURL() == null) {
-            throw new IOException("Unable to load Exchange URL from configuration file");
+            throw new ConfigurationException("Unable to load Exchange URL from configuration file");
         }
 
         return userProfile;
     }
 
     @Override
-    public TempoUserProfileModel getTempoUserProfile(String pathFileName) throws IOException {
+    public TempoUserProfileModel getTempoUserProfile(String pathFileName)
+            throws ConfigurationException, IOException {
         Properties properties = readProperties(pathFileName);
 
         TempoUserProfileModel userProfile = new TempoUserProfileModel();
@@ -41,13 +44,13 @@ public class UserProfileServiceImpl implements UserProfileService {
         userProfile.setURL(properties.getProperty("tempo.URL"));
 
         if (userProfile.getUsername() == null) {
-            throw new IOException("Unable to load Tempo username from configuration file");
+            throw new ConfigurationException("Unable to load Tempo username from configuration file");
         }
         if (userProfile.getPassword() == null) {
-            throw new IOException("Unable to load Tempo password from configuration file");
+            throw new ConfigurationException("Unable to load Tempo password from configuration file");
         }
         if (userProfile.getURL() == null) {
-            throw new IOException("Unable to load Tempo URL from configuration file");
+            throw new ConfigurationException("Unable to load Tempo URL from configuration file");
         }
 
         return userProfile;

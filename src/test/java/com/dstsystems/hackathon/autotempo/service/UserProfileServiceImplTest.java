@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.service;
 
+import com.dstsystems.hackathon.autotempo.exception.ConfigurationException;
 import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 import org.junit.Before;
@@ -9,9 +10,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by user on 06/11/2015.
- */
 public class UserProfileServiceImplTest {
 
     private UserProfileServiceImpl userProfileService;
@@ -55,32 +53,32 @@ public class UserProfileServiceImplTest {
         assertEquals("tempo URL", tempoUserProfileModel.getURL());
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ConfigurationException.class)
     public void testMissingExchangeUsername() throws Exception {
-        userProfileService.getExchangeUserProfile("src/test/resources/missing_user.profile");
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_username.profile");
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ConfigurationException.class)
     public void testMissingExchangePassword() throws Exception {
         userProfileService.getExchangeUserProfile("src/test/resources/missing_password.profile");
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ConfigurationException.class)
     public void testMissingExchangeURL() throws Exception {
         userProfileService.getExchangeUserProfile("src/test/resources/missing_url.profile");
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ConfigurationException.class)
     public void testMissingTempoUsername() throws Exception {
-        userProfileService.getExchangeUserProfile("src/test/resources/missing_user.profile");
+        userProfileService.getExchangeUserProfile("src/test/resources/missing_username.profile");
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ConfigurationException.class)
     public void testMissingTempoPassword() throws Exception {
         userProfileService.getExchangeUserProfile("src/test/resources/missing_password.profile");
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ConfigurationException.class)
     public void testMissingTempoURL() throws Exception {
         userProfileService.getExchangeUserProfile("src/test/resources/missing_url.profile");
     }

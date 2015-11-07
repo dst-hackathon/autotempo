@@ -2,6 +2,7 @@ package com.dstsystems.hackathon.autotempo.main;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import com.dstsystems.hackathon.autotempo.exception.ConfigurationException;
 import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.AppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
@@ -58,6 +59,8 @@ public class AutoTempoApp {
             filterAppointments(appointmentList);
 
             logAppointments(appointmentList);
+        } catch (ConfigurationException e) {
+            System.err.println(e.getMessage());
         } catch (Exception e) {
             System.err.println("An unknown error has occurred:");
             e.printStackTrace();
