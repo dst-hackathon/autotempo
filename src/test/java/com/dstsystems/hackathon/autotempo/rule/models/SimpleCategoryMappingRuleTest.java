@@ -1,5 +1,7 @@
-package com.dstsystems.hackathon.autotempo.models;
+package com.dstsystems.hackathon.autotempo.rule.models;
 
+import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.rule.models.SimpleCategoryMappingRule;
 import org.junit.Before;
 import org.junit.Test;

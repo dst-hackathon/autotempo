@@ -1,4 +1,4 @@
-package com.dstsystems.hackathon.autotempo.service;
+package com.dstsystems.hackathon.autotempo.rule;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 import com.dstsystems.hackathon.autotempo.rule.FirstMatchRuleSetProcessor;

@@ -34,7 +34,10 @@ public class SubjectSensitiveMappingRule extends Rule {
 
     @Override
     public boolean isMatch(AppointmentModel appointment) {
-        return appointment.getSubject().contains(getSubjectWord());
+        if (appointment.getSubject() == null || getSubjectWord() == null || getSubjectWord().trim().isEmpty() ) {
+            return false;
+        }
+        return appointment.getSubject().toUpperCase().contains(getSubjectWord().toUpperCase());
     }
 
     @Override
