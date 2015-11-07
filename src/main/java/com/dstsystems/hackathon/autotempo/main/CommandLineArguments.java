@@ -19,9 +19,6 @@ public class CommandLineArguments {
     @Parameter(names = "-json", description = "Use JSON file instead of connecting to exchange (for debugging)", hidden = true)
     private String jsonPath;
 
-    @Parameter(names = {"-h", "-help"}, description = "Display help message", help = true, hidden = true)
-    private boolean help;
-
     public String getProfilePath() {
         return profilePath;
     }
