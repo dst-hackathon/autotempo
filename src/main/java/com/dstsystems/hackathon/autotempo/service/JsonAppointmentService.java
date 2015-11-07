@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +22,7 @@ public class JsonAppointmentService implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentModel> downloadExchangeAppointments(
-            ExchangeUserProfileModel userProfile, Date start, Date end) throws Exception {
+    public List<AppointmentModel> getAppointments(Date start, Date end) throws IOException {
         File jsonFile = new File(jsonPath);
         return new ObjectMapper().readValue(jsonFile, new TypeReference<List<AppointmentModel>>(){});
     }

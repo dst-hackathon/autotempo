@@ -13,16 +13,23 @@ import microsoft.exchange.webservices.data.search.CalendarView;
 import microsoft.exchange.webservices.data.search.FindItemsResults;
 import org.apache.commons.collections4.IteratorUtils;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AppointmentServiceImpl implements AppointmentService {
+public class ExchangeAppointmentService implements AppointmentService {
+
+    private ExchangeUserProfileModel userProfile;
+
+    public ExchangeAppointmentService(ExchangeUserProfileModel userProfile) {
+        this.userProfile = userProfile;
+    }
 
     @Override
-    public List<AppointmentModel> downloadExchangeAppointments(ExchangeUserProfileModel userProfile, Date start, Date end)
-            throws Exception {
+    public List<AppointmentModel> getAppointments(Date start, Date end) throws Exception {
 
         WebCredentials webCredentials = new WebCredentials(userProfile.getUsername(), userProfile.getPassword());
 

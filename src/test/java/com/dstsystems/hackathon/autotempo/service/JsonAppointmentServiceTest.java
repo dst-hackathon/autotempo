@@ -13,8 +13,7 @@ public class JsonAppointmentServiceTest {
     @Test
     public void testDownloadExchangeAppointments() throws Exception {
         String jsonPath = "src/test/resources/test_appointments.json";
-        List<AppointmentModel> appointmentModels =
-                new JsonAppointmentService(jsonPath).downloadExchangeAppointments(null, null, null);
+        List<AppointmentModel> appointmentModels = new JsonAppointmentService(jsonPath).getAppointments(null, null);
 
         assertEquals(2, appointmentModels.size());
         assertEquals("DST Hackathon", appointmentModels.get(0).getSubject());

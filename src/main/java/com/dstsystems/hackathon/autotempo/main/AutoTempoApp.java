@@ -25,7 +25,6 @@ public class AutoTempoApp {
     private CommandLineArguments parsedArgs;
     private AppointmentService appointmentService;
     private UserProfileService userProfileService;
-    private ExchangeUserProfileModel exchangeUserProfile;
     private FirstMatchRuleSetProcessor ruleSetProcessor;
     private TempoSubmitter tempoSubmitter;
 
@@ -48,7 +47,6 @@ public class AutoTempoApp {
 
         try {
             initServices();
-            loadProfiles();
 
             List<AppointmentModel> appointmentList = fetchAppointments();
             filterAppointments(appointmentList);
@@ -80,23 +78,27 @@ public class AutoTempoApp {
         return parsedArgs;
     }
 
-    private void initServices() {
+    private void initServices() throws IOException {
+        userProfileService = new UserProfileServiceImpl();
+
         if (StringUtils.isEmpty(parsedArgs.getJsonPath())) {
-            appointmentService = new AppointmentServiceImpl();
+            ExchangeUserProfileModel exchangeUserProfile =
+                    userProfileService.getExchangeUserProfile(parsedArgs.getProfilePath());
+            appointmentService = new ExchangeAppointmentService(exchangeUserProfile);
+            System.out.println("Loaded Exchange profile");
         } else {
             appointmentService = new JsonAppointmentService(parsedArgs.getJsonPath());
+            System.out.println("Using JsonAppointmentService");
         }
 
-        userProfileService = new UserProfileServiceImpl();
-    }
-
-    private void loadProfiles() {
-        exchangeUserProfile = userProfileService.getExchangeUserProfile(parsedArgs.getProfilePath());
-        System.out.println("ExchangeUserProfile loaded");
         TempoUserProfileModel tempoUserProfile = userProfileService.getTempoUserProfile(parsedArgs.getProfilePath());
         tempoSubmitter = new TempoSubmitter(tempoUserProfile);
-        tempoSubmitter.setDry(parsedArgs.getDry());
-        System.out.println("TempoUserProfile loaded");
+        System.out.println("Loaded Tempo user profile");
+
+        if (parsedArgs.getDry()) {
+            tempoSubmitter.setDry(true);
+            System.out.println("Performign dry run. Worklogs will not be created.");
+        }
     }
 
     private List<AppointmentModel> fetchAppointments() throws Exception {
@@ -104,7 +106,7 @@ public class AutoTempoApp {
         Date endDate = getEndDateTime(parsedArgs.getDate());
 
         System.out.println("Fetching appointments from " + startDate + " to " + endDate);
-        List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(exchangeUserProfile, startDate, endDate);
+        List<AppointmentModel> appointmentList = appointmentService.getAppointments(startDate, endDate);
         System.out.println(appointmentList.size() + " Appointments Loaded");
         System.out.println(appointmentList);
         return appointmentList;

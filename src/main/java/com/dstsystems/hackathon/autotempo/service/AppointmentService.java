@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentModel> downloadExchangeAppointments(ExchangeUserProfileModel userProfile, Date start, Date end) throws Exception;
+    List<AppointmentModel> getAppointments(Date start, Date end) throws Exception;
 }

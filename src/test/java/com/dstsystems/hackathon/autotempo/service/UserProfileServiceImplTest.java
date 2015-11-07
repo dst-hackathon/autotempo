@@ -16,7 +16,7 @@ public class UserProfileServiceImplTest {
     private TempoUserProfileModel tempoUserProfileModel;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         UserProfileServiceImpl service = new UserProfileServiceImpl();
         exchangeUserProfileModel = service.getExchangeUserProfile("src/test/resources/user.profile");
         tempoUserProfileModel = service.getTempoUserProfile("src/test/resources/user.profile");
