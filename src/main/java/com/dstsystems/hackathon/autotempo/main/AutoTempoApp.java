@@ -60,6 +60,7 @@ public class AutoTempoApp {
 
             logAppointments(appointmentList, ruleSet);
         } catch (Exception e) {
+            System.out.println("An unknown error has occurred:");
             e.printStackTrace();
         }
     }
@@ -117,20 +118,28 @@ public class AutoTempoApp {
         System.out.println("No conflicts found");
     }
 
-    private void logAppointments(List<AppointmentModel> appointmentList, RuleSet ruleSet) throws IOException {
+    protected void logAppointments(List<AppointmentModel> appointmentList, RuleSet ruleSet) throws IOException {
         for (AppointmentModel appointmentModel : appointmentList) {
-            WorklogModel worklogModel = new WorklogModel();
-
-            if (ruleSetProcessor.process(worklogModel, appointmentModel, ruleSet)) {
-                System.out.println(appointmentModel.getSubject() + " matches the rule set");
-                WorklogHelper.populateCommon(worklogModel, appointmentModel);
-                worklogModel.setComment(appointmentModel.getSubject());
-
-                System.out.println(worklogModel);
-
-                tempoSubmitter.submitWorklog(worklogModel);
-                System.out.println(worklogModel.getIssueKey() + " has been logged on " + worklogModel.getDate().toString() + " with time = " + worklogModel.getTimeSpent() + ".");
+            try {
+                logAppointment(appointmentModel, ruleSet);
+            } catch (IOException e) {
+                System.out.println("Unable to log " + appointmentModel + ". " + e.getMessage());
             }
+        }
+    }
+
+    protected void logAppointment(AppointmentModel appointmentModel, RuleSet ruleSet) throws IOException {
+        WorklogModel worklogModel = new WorklogModel();
+
+        if (ruleSetProcessor.process(worklogModel, appointmentModel, ruleSet)) {
+            System.out.println(appointmentModel.getSubject() + " matches the rule set");
+            WorklogHelper.populateCommon(worklogModel, appointmentModel);
+            worklogModel.setComment(appointmentModel.getSubject());
+
+            System.out.println(worklogModel);
+
+            tempoSubmitter.submitWorklog(worklogModel);
+            System.out.println(worklogModel.getIssueKey() + " has been logged on " + worklogModel.getDate().toString() + " with time = " + worklogModel.getTimeSpent() + ".");
         }
     }
 

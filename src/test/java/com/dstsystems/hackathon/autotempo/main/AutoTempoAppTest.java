@@ -1,20 +1,44 @@
 package com.dstsystems.hackathon.autotempo.main;
 
+import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AutoTempoAppTest {
 
+    @InjectMocks
+    @Spy
     private AutoTempoApp autoTempoApp;
 
-    @Before
-    public void setUp() throws Exception {
-        autoTempoApp = new AutoTempoApp();
+    @Test
+    public void testLogAppointments() throws Exception {
+        AppointmentModel appointment1 = new AppointmentModel();
+        AppointmentModel appointment2 = new AppointmentModel();
+        List<AppointmentModel> appointments = Arrays.asList(appointment1, appointment2);
+
+        doThrow(new IOException()).when(autoTempoApp).logAppointment(eq(appointment1), any(RuleSet.class));
+        doNothing().when(autoTempoApp).logAppointment(eq(appointment2), any(RuleSet.class));
+
+        autoTempoApp.logAppointments(appointments, null);
+
+        verify(autoTempoApp).logAppointment(appointment1, null);
+        verify(autoTempoApp).logAppointment(appointment2, null);
     }
 
     @Test
