@@ -14,11 +14,12 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.IOException;
-import java.util.TimeZone;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 public class TempoSubmitterTest {
 
@@ -29,9 +30,6 @@ public class TempoSubmitterTest {
 
     @Before
     public void setUp() throws Exception {
-        // Set timezone for CI server
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Bangkok"));
-
         TempoUserProfileModel userProfile = new TempoUserProfileModel();
         userProfile.setURL("http://localhost:8111/");
         userProfile.setUsername("myjirauser");
@@ -101,7 +99,7 @@ public class TempoSubmitterTest {
 
         doReturn(1000L).when(tempoSubmitter).getRemainingEstimate(issueKey);
 
-        assertEquals(900, tempoSubmitter.getNewRemainingEstimate(issueKey, 100));
+        assertEquals(900, (long) tempoSubmitter.getNewRemainingEstimate(issueKey, 100));
     }
 
     @Test
@@ -110,11 +108,20 @@ public class TempoSubmitterTest {
 
         doReturn(1000L).when(tempoSubmitter).getRemainingEstimate(issueKey);
 
-        assertEquals(0, tempoSubmitter.getNewRemainingEstimate(issueKey, 10000));
+        assertEquals(0, (long) tempoSubmitter.getNewRemainingEstimate(issueKey, 10000));
     }
 
     @Test
-    public void testGetWorklogJsonInternal() throws Exception {
+    public void testGetNewRemainingEstimateCaseForbidden() throws Exception {
+        String issueKey = "INT-2";
+
+        doThrow(new HttpStatusException("", 403)).when(tempoSubmitter).getRemainingEstimate(issueKey);
+
+        assertNull(tempoSubmitter.getNewRemainingEstimate(issueKey, 10000));
+    }
+
+    @Test
+    public void testGetWorklogJsonProject() throws Exception {
         WorklogModel worklogModel = new WorklogModel();
         worklogModel.setComment("My comment");
         worklogModel.setIssueKey("TP-1");
@@ -139,6 +146,39 @@ public class TempoSubmitterTest {
                 "        {\n" +
                 "            \"key\": \"_Account_\",\n" +
                 "            \"value\": \"ATT01\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}\n";
+        String json = tempoSubmitter.getWorklogJson(worklogModel);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    public void testGetWorklogJsonInternal() throws Exception {
+        WorklogModel worklogModel = new WorklogModel();
+        worklogModel.setComment("My comment");
+        worklogModel.setIssueKey("INT-1");
+        worklogModel.setTimeSpent(3600);
+        worklogModel.setDate(DateTestUtils.buildDate("2015-11-01"));
+        worklogModel.setAccountKey("ATT02");
+
+        doReturn(null).when(tempoSubmitter).getNewRemainingEstimate("INT-1", 3600);
+
+        String expectedJson = "{\n" +
+                "    \"dateStarted\": \"2015-11-01T00:00:00\",\n" +
+                "    \"timeSpentSeconds\": 3600,\n" +
+                "    \"comment\": \"My comment\",\n" +
+                "    \"author\": {\n" +
+                "        \"name\": \"myjirauser\"\n" +
+                "    },\n" +
+                "    \"issue\": {\n" +
+                "        \"key\": \"INT-1\",\n" +
+                "        \"remainingEstimateSeconds\": null\n" +
+                "    },\n" +
+                "    \"worklogAttributes\": [\n" +
+                "        {\n" +
+                "            \"key\": \"_Account_\",\n" +
+                "            \"value\": \"ATT02\"\n" +
                 "        }\n" +
                 "    ]\n" +
                 "}\n";

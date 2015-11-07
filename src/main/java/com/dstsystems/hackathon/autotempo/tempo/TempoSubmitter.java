@@ -9,6 +9,7 @@ import com.dstsystems.hackathon.autotempo.tempo.models.TempoWorklogAttribute;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -79,14 +80,25 @@ public class TempoSubmitter {
         return jsonNode.path("fields").path("timetracking").path("remainingEstimateSeconds").asLong();
     }
 
-    protected long getNewRemainingEstimate(String issueKey, long timeSpent) throws IOException {
-        long remainingEstimate = getRemainingEstimate(issueKey);
-        remainingEstimate -= timeSpent;
-        if (remainingEstimate < 0) {
-            remainingEstimate = 0;
-        }
+    protected Long getNewRemainingEstimate(String issueKey, long timeSpent) throws IOException {
+        try {
+            long remainingEstimate = getRemainingEstimate(issueKey);
+            remainingEstimate -= timeSpent;
+            if (remainingEstimate < 0) {
+                remainingEstimate = 0;
+            }
 
-        return remainingEstimate;
+            return remainingEstimate;
+        } catch (HttpStatusException e) {
+            if (e.getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+                // We might not have the right to view internal issues
+                // In this case, just use no time estimate, since internal issues
+                // do not require estimates
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     private String postWorklog(String content) throws IOException {
@@ -114,7 +126,7 @@ public class TempoSubmitter {
 
             int httpStatus = response.getStatusLine().getStatusCode();
             if (httpStatus != 200) {
-                throw new IOException("Got http response code " + httpStatus + ": " + result);
+                throw new HttpStatusException("Got http response code " + httpStatus + ": " + result, httpStatus);
             }
 
             return result;

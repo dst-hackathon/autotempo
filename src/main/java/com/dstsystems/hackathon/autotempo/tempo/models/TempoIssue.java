@@ -4,7 +4,7 @@ public class TempoIssue {
 
     private String key;
 
-    private long remainingEstimateSeconds;
+    private Long remainingEstimateSeconds;
 
     public String getKey() {
         return key;
@@ -14,11 +14,11 @@ public class TempoIssue {
         this.key = key;
     }
 
-    public long getRemainingEstimateSeconds() {
+    public Long getRemainingEstimateSeconds() {
         return remainingEstimateSeconds;
     }
 
-    public void setRemainingEstimateSeconds(long remainingEstimateSeconds) {
+    public void setRemainingEstimateSeconds(Long remainingEstimateSeconds) {
         this.remainingEstimateSeconds = remainingEstimateSeconds;
     }
 
