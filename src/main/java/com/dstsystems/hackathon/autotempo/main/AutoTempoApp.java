@@ -12,6 +12,7 @@ import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,17 +22,6 @@ import java.util.List;
 public class AutoTempoApp {
 
     public static final String DEFAULT_USER_PROFILE_PATH = "/user.profile";
-
-    private static Date generateDateFromString(String dateInString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        Date date = new Date();
-        try {
-            date = sdf.parse(dateInString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
 
     public static void main(String[] args) {
 
@@ -49,8 +39,8 @@ public class AutoTempoApp {
         System.out.println("ExchangeUserProfile loaded");
         TempoUserProfileModel tempoUserProfileModel = userProfileService.getTempoUserProfile(userProfilePath);
         System.out.println("TempoUserProfile loaded");
-        Date startDate = generateDateFromString("11/07/2015 00:00:01");
-        Date endDate = generateDateFromString("11/07/2015 23:59:59");
+        Date startDate = getStartDate();
+        Date endDate = getEndDate();
 
         try {
             List<AppointmentModel> appointmentList = appointmentService.downloadExchangeAppointments(exchangeUserProfile, startDate, endDate);
@@ -64,7 +54,7 @@ public class AutoTempoApp {
             ConflictAppointmentListFilter conflictAppointmentListFilter = new ConflictAppointmentListFilter();
             conflictAppointmentListFilter.filter(appointmentList);
             System.out.println("No conflicts found");
-            
+
             String rulePath = "src/main/resources/Rules.xml";
             if (args.length > 1 && args[1] != null) {
                 rulePath = args[1];
@@ -92,6 +82,24 @@ public class AutoTempoApp {
             e.printStackTrace();
         }
 
+    }
+
+    private static Date getStartDate() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 1);
+        return c.getTime();
+    }
+
+    private static Date getEndDate() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
     }
 
 }
