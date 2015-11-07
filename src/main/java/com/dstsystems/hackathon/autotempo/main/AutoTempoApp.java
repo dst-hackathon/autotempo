@@ -94,6 +94,7 @@ public class AutoTempoApp {
         System.out.println("ExchangeUserProfile loaded");
         TempoUserProfileModel tempoUserProfile = userProfileService.getTempoUserProfile(parsedArgs.getProfilePath());
         tempoSubmitter = new TempoSubmitter(tempoUserProfile);
+        tempoSubmitter.setDry(parsedArgs.getDry());
         System.out.println("TempoUserProfile loaded");
     }
 

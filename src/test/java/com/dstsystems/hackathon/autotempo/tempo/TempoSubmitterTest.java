@@ -61,6 +61,17 @@ public class TempoSubmitterTest {
                 .withRequestBody(equalTo("test json")));
     }
 
+    @Test
+    public void testSubmitWorklogDry() throws Exception {
+        WorklogModel worklogModel = new WorklogModel();
+        doReturn("test json").when(tempoSubmitter).getWorklogJson(worklogModel);
+
+        tempoSubmitter.setDry(true);
+        tempoSubmitter.submitWorklog(worklogModel);
+
+        verify(0, postRequestedFor(urlEqualTo("/rest/tempo-timesheets/3/worklogs/")));
+    }
+
     @Test(expected = IOException.class)
     public void testSubmitWorklogCaseError() throws Exception {
         WorklogModel worklogModel = new WorklogModel();

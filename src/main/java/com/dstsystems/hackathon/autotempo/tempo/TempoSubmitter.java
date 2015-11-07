@@ -34,6 +34,7 @@ public class TempoSubmitter {
 
     private TempoUserProfileModel userProfile;
     private ObjectMapper objectMapper;
+    private boolean dry;
 
     public TempoSubmitter(TempoUserProfileModel userProfile) {
         this.userProfile = userProfile;
@@ -45,7 +46,10 @@ public class TempoSubmitter {
 
     public void submitWorklog(WorklogModel worklogModel) throws IOException {
         String worklogJson = getWorklogJson(worklogModel);
-        postWorklog(worklogJson);
+
+        if (!dry) {
+            postWorklog(worklogJson);
+        }
     }
 
     protected String getWorklogJson(WorklogModel worklogModel) throws IOException {
@@ -142,4 +146,13 @@ public class TempoSubmitter {
             }
         }
     }
+
+    public boolean isDry() {
+        return dry;
+    }
+
+    public void setDry(boolean dry) {
+        this.dry = dry;
+    }
+
 }
