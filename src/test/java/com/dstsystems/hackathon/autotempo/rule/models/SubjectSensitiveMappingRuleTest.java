@@ -23,7 +23,6 @@ public class SubjectSensitiveMappingRuleTest {
         WorklogModel worklog = new WorklogModel();
         AppointmentModel appointmentModel = new AppointmentModel();
         appointmentModel.setSubject("A very important Meeting");
-
         assertTrue(rule.isMatch(appointmentModel));
     }
 
@@ -66,5 +65,19 @@ public class SubjectSensitiveMappingRuleTest {
 
         rule.setSubjectWord("   ");
         assertFalse(rule.isMatch(appointmentModel));
+    }
+
+    @Test
+    public void thatRuleWithWildcardSubjectShouldMatch() {
+        WorklogModel worklog = new WorklogModel();
+        AppointmentModel appointmentModel = new AppointmentModel();
+        appointmentModel.setSubject("[Important] AMS/BS Weekly PL - meeting");
+
+        rule.setSubjectWord("AMS*BS*PL - Meeting");
+        assertTrue(rule.isMatch(appointmentModel));
+
+        rule.setSubjectWord("AMS*BS*PL - Meetings");
+        assertFalse(rule.isMatch(appointmentModel));
+
     }
 }

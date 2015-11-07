@@ -37,7 +37,9 @@ public class SubjectSensitiveMappingRule extends Rule {
         if (appointment.getSubject() == null || getSubjectWord() == null || getSubjectWord().trim().isEmpty() ) {
             return false;
         }
-        return appointment.getSubject().toUpperCase().contains(getSubjectWord().toUpperCase());
+
+        String encodedSub = "(.)*" + getSubjectWord().toUpperCase().replaceAll("\\*", "(.)*" + "(.)*");
+        return appointment.getSubject().toUpperCase().matches(encodedSub);
     }
 
     @Override
