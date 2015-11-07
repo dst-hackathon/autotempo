@@ -136,7 +136,6 @@ public class AutoTempoApp {
         if (ruleSetProcessor.process(worklogModel, appointmentModel, ruleSet)) {
             System.out.println(appointmentModel.getSubject() + " matches the rule set");
             WorklogHelper.populateCommon(worklogModel, appointmentModel);
-            worklogModel.setComment(appointmentModel.getSubject());
 
             System.out.println(worklogModel);
 
