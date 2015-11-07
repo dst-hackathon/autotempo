@@ -43,6 +43,6 @@ Usage: java -jar autotempo.jar [options]
 
 Travis CI continuously builds the application. The latest snapshot is available at the following URL:
 
-<https://storage.googleapis.com/radiant-wall-112112.appspot.com/autotempo/autotempo-1.0-SNAPSHOT.jar>
+<https://storage.googleapis.com/radiant-wall-112112.appspot.com/autotempo/autotempo-1.1-SNAPSHOT.jar>
 
 [![Build Status](https://travis-ci.org/dst-hackathon/autotempo.svg)](https://travis-ci.org/dst-hackathon/autotempo)
