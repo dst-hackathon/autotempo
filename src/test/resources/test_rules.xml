@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RuleSet>
+    <SimpleCategoryMappingRule>
+        <category>Training</category>
+        <issueKey>INT-1</issueKey>
+        <accountKey>account1</accountKey>
+        <comment>Training</comment>
+    </SimpleCategoryMappingRule>
+    <SimpleCategoryMappingRule>
+        <category>training2</category>
+        <issueKey>INT-2</issueKey>
+        <accountKey>account2</accountKey>
+        <comment>Training2</comment>
+    </SimpleCategoryMappingRule>
+    <SubjectSensitiveMappingRule>
+        <subjectWord>important</subjectWord>
+    </SubjectSensitiveMappingRule>
+</RuleSet>
+

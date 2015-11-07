@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RuleSet>
-    <ruleList>
     <SimpleCategoryMappingRule>
         <category>Training</category>
         <issueKey>INT-1</issueKey>
@@ -34,7 +33,5 @@
     <SubjectSensitiveMappingRule>
         <subjectWord>important</subjectWord>
     </SubjectSensitiveMappingRule>
-    </ruleList>
-
 </RuleSet>
 
