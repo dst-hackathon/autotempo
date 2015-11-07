@@ -1,12 +1,17 @@
 package com.dstsystems.hackathon.autotempo.main;
 
 import com.dstsystems.hackathon.autotempo.models.*;
+import com.dstsystems.hackathon.autotempo.rule.FirstMatchRuleSetProcessor;
+import com.dstsystems.hackathon.autotempo.rule.RuleSetLoader;
+import com.dstsystems.hackathon.autotempo.rule.WorklogHelper;
+import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.service.*;
+import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
+import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 

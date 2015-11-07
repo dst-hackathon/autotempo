@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.models;
 
+import com.dstsystems.hackathon.autotempo.rule.WorklogHelper;
 import org.junit.Before;
 import org.junit.Test;
 

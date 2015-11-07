@@ -1,4 +1,7 @@
-package com.dstsystems.hackathon.autotempo.models;
+package com.dstsystems.hackathon.autotempo.rule.models;
+
+import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 
 /**
  * Created by dst on 11/6/2015 AD.

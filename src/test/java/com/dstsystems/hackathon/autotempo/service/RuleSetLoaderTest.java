@@ -1,9 +1,10 @@
 package com.dstsystems.hackathon.autotempo.service;
 
-import com.dstsystems.hackathon.autotempo.models.Rule;
-import com.dstsystems.hackathon.autotempo.models.RuleSet;
-import com.dstsystems.hackathon.autotempo.models.SimpleCategoryMappingRule;
-import com.dstsystems.hackathon.autotempo.models.SubjectSensitiveMappingRule;
+import com.dstsystems.hackathon.autotempo.rule.models.Rule;
+import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
+import com.dstsystems.hackathon.autotempo.rule.models.SimpleCategoryMappingRule;
+import com.dstsystems.hackathon.autotempo.rule.models.SubjectSensitiveMappingRule;
+import com.dstsystems.hackathon.autotempo.rule.RuleSetLoader;
 import org.junit.Test;
 
 import java.util.List;

@@ -1,9 +1,11 @@
-package com.dstsystems.hackathon.autotempo.models;
+package com.dstsystems.hackathon.autotempo.rule.models;
+
+import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Simple Category based Worklog mapping rule

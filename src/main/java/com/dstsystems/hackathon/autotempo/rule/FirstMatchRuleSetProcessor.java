@@ -1,8 +1,8 @@
-package com.dstsystems.hackathon.autotempo.service;
+package com.dstsystems.hackathon.autotempo.rule;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
-import com.dstsystems.hackathon.autotempo.models.Rule;
-import com.dstsystems.hackathon.autotempo.models.RuleSet;
+import com.dstsystems.hackathon.autotempo.rule.models.Rule;
+import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 
 /**

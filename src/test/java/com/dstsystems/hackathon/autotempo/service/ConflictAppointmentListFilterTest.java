@@ -1,6 +1,7 @@
 package com.dstsystems.hackathon.autotempo.service;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.utils.DateTestUtils;
 import org.junit.Test;
 

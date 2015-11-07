@@ -1,4 +1,4 @@
-package com.dstsystems.hackathon.autotempo.service;
+package com.dstsystems.hackathon.autotempo.filter;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
 

@@ -1,4 +1,7 @@
-package com.dstsystems.hackathon.autotempo.models;
+package com.dstsystems.hackathon.autotempo.rule;
+
+import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 
 import java.util.Calendar;
 

@@ -1,4 +1,4 @@
-package com.dstsystems.hackathon.autotempo.models;
+package com.dstsystems.hackathon.autotempo.rule.models;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;

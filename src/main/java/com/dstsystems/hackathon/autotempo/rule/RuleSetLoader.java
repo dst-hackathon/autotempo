@@ -1,6 +1,6 @@
-package com.dstsystems.hackathon.autotempo.service;
+package com.dstsystems.hackathon.autotempo.rule;
 
-import com.dstsystems.hackathon.autotempo.models.RuleSet;
+import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;

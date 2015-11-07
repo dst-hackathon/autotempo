@@ -1,8 +1,9 @@
 package com.dstsystems.hackathon.autotempo.service;
 
 import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
-import com.dstsystems.hackathon.autotempo.models.Rule;
-import com.dstsystems.hackathon.autotempo.models.RuleSet;
+import com.dstsystems.hackathon.autotempo.rule.FirstMatchRuleSetProcessor;
+import com.dstsystems.hackathon.autotempo.rule.models.Rule;
+import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import org.junit.Before;
 import org.junit.Test;
