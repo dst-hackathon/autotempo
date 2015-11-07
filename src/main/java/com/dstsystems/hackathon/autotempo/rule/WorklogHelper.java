@@ -19,9 +19,13 @@ public class WorklogHelper {
         c.set(Calendar.MILLISECOND, 0);
         worklog.setDate(c.getTime());
         worklog.setTimeSpent((appointment.getEnd().getTime() - appointment.getStart().getTime()) / 1000);
-
         if (null == worklog.getComment() || worklog.getComment().length() == 0) {
-            worklog.setComment(appointment.getSubject());
+            String comment = "";
+            if (null != appointment.getSubject() && appointment.getSubject().length() > 0 )
+                comment = appointment.getSubject();
+            else
+                comment = "Working on issue " + worklog.getIssueKey();
+            worklog.setComment( comment );
         }
     }
 

@@ -35,4 +35,40 @@ public class WorklogHelperTest {
         assertEquals("2013-10-10T00:00:00", fmt.format(worklog.getDate()) );
 
     }
+
+    @Test
+    public void testPopulateCommonWithNoComment() throws ParseException {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        AppointmentModel appointmentModel = new AppointmentModel();
+        appointmentModel.setStart(fmt.parse("2013-10-10T00:00:10"));
+        appointmentModel.setEnd(fmt.parse("2013-10-10T00:00:20"));
+        appointmentModel.setSubject("ELDS");
+
+        WorklogModel worklog = new WorklogModel();
+        WorklogHelper.populateCommon(worklog, appointmentModel);
+
+        assertEquals(10, worklog.getTimeSpent());
+
+        assertEquals("2013-10-10T00:00:00", fmt.format(worklog.getDate()) );
+        assertEquals("ELDS", worklog.getComment());
+
+    }
+
+    @Test
+    public void testPopulateCommonWithNoCommentNoSubject() throws ParseException {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        AppointmentModel appointmentModel = new AppointmentModel();
+        appointmentModel.setStart(fmt.parse("2013-10-10T00:00:10"));
+        appointmentModel.setEnd(fmt.parse("2013-10-10T00:00:20"));
+
+        WorklogModel worklog = new WorklogModel();
+        worklog.setIssueKey("INT-05");
+        WorklogHelper.populateCommon(worklog, appointmentModel);
+
+        assertEquals(10, worklog.getTimeSpent());
+
+        assertEquals("2013-10-10T00:00:00", fmt.format(worklog.getDate()) );
+        assertEquals("Working on issue INT-05", worklog.getComment());
+
+    }
 }
