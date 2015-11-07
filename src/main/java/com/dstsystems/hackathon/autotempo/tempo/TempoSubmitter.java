@@ -1,5 +1,6 @@
 package com.dstsystems.hackathon.autotempo.tempo;
 
+import com.dstsystems.hackathon.autotempo.exception.HttpStatusException;
 import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
 import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.tempo.models.TempoAuthor;

@@ -1,4 +1,4 @@
-package com.dstsystems.hackathon.autotempo.tempo;
+package com.dstsystems.hackathon.autotempo.exception;
 
 import java.io.IOException;
 
