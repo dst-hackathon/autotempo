@@ -133,20 +133,20 @@ public class AutoTempoApp {
         }
     }
 
-    private static Date getStartDateTime(Date date) {
+    protected Date getStartDateTime(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 1);
+        c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     }
 
-    private static Date getEndDateTime(Date date) {
+    protected Date getEndDateTime(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.set(Calendar.HOUR, 23);
+        c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
         c.set(Calendar.SECOND, 59);
         c.set(Calendar.MILLISECOND, 0);
