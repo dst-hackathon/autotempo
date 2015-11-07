@@ -2,15 +2,18 @@ package com.dstsystems.hackathon.autotempo.main;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.filter.AppointmentListFilter;
-import com.dstsystems.hackathon.autotempo.models.*;
+import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
+import com.dstsystems.hackathon.autotempo.models.AppointmentModel;
+import com.dstsystems.hackathon.autotempo.models.ExchangeUserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.TempoUserProfileModel;
+import com.dstsystems.hackathon.autotempo.models.WorklogModel;
 import com.dstsystems.hackathon.autotempo.rule.FirstMatchRuleSetProcessor;
 import com.dstsystems.hackathon.autotempo.rule.RuleSetLoader;
 import com.dstsystems.hackathon.autotempo.rule.WorklogHelper;
 import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 import com.dstsystems.hackathon.autotempo.service.*;
-import com.dstsystems.hackathon.autotempo.filter.AcceptedAppointmentListFilter;
-import com.dstsystems.hackathon.autotempo.filter.ConflictAppointmentListFilter;
 import com.dstsystems.hackathon.autotempo.tempo.TempoSubmitter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static org.apache.commons.lang3.time.DurationFormatUtils.formatDurationWords;
 
 public class AutoTempoApp {
 
@@ -84,12 +89,12 @@ public class AutoTempoApp {
             System.out.println("Loaded Exchange profile");
         } else {
             appointmentService = new JsonAppointmentService(parsedArgs.getJsonPath());
-            System.out.println("Using JsonAppointmentService");
+            System.out.println("Loaded JsonAppointmentService");
         }
 
         TempoUserProfileModel tempoUserProfile = userProfileService.getTempoUserProfile(parsedArgs.getProfilePath());
         tempoSubmitter = new TempoSubmitter(tempoUserProfile);
-        System.out.println("Loaded Tempo user profile");
+        System.out.println("Loaded Tempo profile");
 
         if (parsedArgs.getDry()) {
             tempoSubmitter.setDry(true);
@@ -98,7 +103,8 @@ public class AutoTempoApp {
 
         RuleSetLoader ruleSetLoader = new RuleSetLoader();
         ruleSet = ruleSetLoader.getRuleSet(parsedArgs.getRulePath());
-        System.out.println("Loaded rule set");
+        System.out.println("Loaded rules");
+        System.out.println();
     }
 
     private List<AppointmentModel> fetchAppointments() throws Exception {
@@ -107,8 +113,12 @@ public class AutoTempoApp {
 
         System.out.println("Fetching appointments from " + startDate + " to " + endDate);
         List<AppointmentModel> appointmentList = appointmentService.getAppointments(startDate, endDate);
-        System.out.println(appointmentList.size() + " Appointments Loaded");
-        System.out.println(appointmentList);
+        System.out.println(appointmentList.size() + " appointment(s) loaded");
+        for (AppointmentModel appointmentModel : appointmentList) {
+            System.out.println(" - " + appointmentModel);
+        }
+        System.out.println();
+
         return appointmentList;
     }
 
@@ -116,8 +126,7 @@ public class AutoTempoApp {
         for (AppointmentListFilter filter : appointmentListFilters) {
             filter.filter(appointmentList);
         }
-        System.out.println("Appointment filtered: " + appointmentList.size() + " Appointments remaining");
-        System.out.println("No conflicts found");
+        System.out.println("Appointments filtered: " + appointmentList.size() + " appointments remaining");
     }
 
     protected void logAppointments(List<AppointmentModel> appointmentList) throws IOException {
@@ -134,13 +143,13 @@ public class AutoTempoApp {
         WorklogModel worklogModel = new WorklogModel();
 
         if (ruleSetProcessor.process(worklogModel, appointmentModel, ruleSet)) {
-            System.out.println(appointmentModel.getSubject() + " matches the rule set");
             WorklogHelper.populateCommon(worklogModel, appointmentModel);
 
-            System.out.println(worklogModel);
+            System.out.println("Got " + worklogModel);
 
             tempoSubmitter.submitWorklog(worklogModel);
-            System.out.println(worklogModel.getIssueKey() + " has been logged on " + worklogModel.getDate().toString() + " with time = " + worklogModel.getTimeSpent() + ".");
+            System.out.println(worklogModel.getIssueKey() + " has been logged on " + worklogModel.getDate()
+                    + " for " + formatDurationWords(worklogModel.getTimeSpent() * 1000, true, true) + ".");
         }
     }
 

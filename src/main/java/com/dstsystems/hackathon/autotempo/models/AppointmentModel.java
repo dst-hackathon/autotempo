@@ -60,12 +60,13 @@ public class AppointmentModel {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("subject", subject)
-                .append("start", start)
-                .append("end", end)
-                .append("categories", categories)
-                .append("myResponseType", myResponseType)
-                .toString();
+        return "AppointmentModel{" +
+                "subject='" + subject + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", categories=" + categories +
+                ", myResponseType=" + myResponseType +
+                '}';
     }
+
 }
