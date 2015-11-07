@@ -59,9 +59,15 @@ public class AutoTempoApp {
             ConflictAppointmentListFilter conflictAppointmentListFilter = new ConflictAppointmentListFilter();
             conflictAppointmentListFilter.filter(appointmentList);
             System.out.println("No conflicts found");
+            
+            String rulePath = "src/main/resources/Rules.xml";
+            if (args.length > 1 && args[1] != null) {
+                rulePath = args[1];
+            }
 
             RuleSetLoader ruleSetLoader = new RuleSetLoader();
-            RuleSet ruleSet = ruleSetLoader.getRuleSet("src/main/resources/Rules.xml");
+
+            RuleSet ruleSet = ruleSetLoader.getRuleSet(rulePath);
             System.out.println("SimpleRule set");
 
             for (AppointmentModel appointmentModel : appointmentList) {
