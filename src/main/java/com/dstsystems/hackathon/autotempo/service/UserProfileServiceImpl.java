@@ -14,27 +14,13 @@ import java.util.Properties;
  */
 public class UserProfileServiceImpl implements UserProfileService {
 
-    private Properties readProperties( String pathFileName ) {
-
-        Properties properties = new Properties();
-        try {
-            File file = new File(pathFileName);
-            FileInputStream fileInput = new FileInputStream(file);
-            properties.load(fileInput);
-            fileInput.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
-
     @Override
-    public ExchangeUserProfileModel getExchangeUserProfile(String pathFileName) {
-
+    public ExchangeUserProfileModel getExchangeUserProfile(String pathFileName) throws IOException {
         ExchangeUserProfileModel userProfile = new ExchangeUserProfileModel();
 
-        Properties properties = readProperties( pathFileName );
+        Properties properties = readProperties(pathFileName);
         Enumeration enuKeys = properties.keys();
+
         while (enuKeys.hasMoreElements()) {
             String key = (String) enuKeys.nextElement();
             String value = properties.getProperty(key);
@@ -57,12 +43,12 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public TempoUserProfileModel getTempoUserProfile(String pathFileName) {
-
+    public TempoUserProfileModel getTempoUserProfile(String pathFileName) throws IOException {
         TempoUserProfileModel userProfile = new TempoUserProfileModel();
 
-        Properties properties = readProperties( pathFileName );
+        Properties properties = readProperties(pathFileName);
         Enumeration enuKeys = properties.keys();
+
         while (enuKeys.hasMoreElements()) {
             String key = (String) enuKeys.nextElement();
             String value = properties.getProperty(key);
@@ -83,4 +69,13 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         return userProfile;
     }
+
+    private Properties readProperties(String pathFileName) throws IOException {
+        Properties properties = new Properties();
+        try (FileInputStream fileInput = new FileInputStream(pathFileName);) {
+            properties.load(fileInput);
+            return properties;
+        }
+    }
+
 }

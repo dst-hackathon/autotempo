@@ -7,6 +7,7 @@ import com.dstsystems.hackathon.autotempo.rule.models.SubjectSensitiveMappingRul
 import com.dstsystems.hackathon.autotempo.rule.RuleSetLoader;
 import org.junit.Test;
 
+import javax.xml.bind.JAXBException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -40,6 +41,12 @@ public class RuleSetLoaderTest {
         assertEquals("INT-3", subjectRule.getIssueKey());
         assertEquals("account3", subjectRule.getAccountKey());
         assertEquals("Important Stuff", subjectRule.getComment());
+    }
+
+    @Test(expected = JAXBException.class)
+    public void testLoadRuleSetNotFound() throws JAXBException {
+        RuleSetLoader ruleSetLoader = new RuleSetLoader();
+        ruleSetLoader.getRuleSet("not found");
     }
 
 }

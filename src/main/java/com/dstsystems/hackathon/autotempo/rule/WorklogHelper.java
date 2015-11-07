@@ -9,8 +9,8 @@ import java.util.Calendar;
  * Created by dst on 11/6/2015 AD.
  */
 public class WorklogHelper {
-    public static void populateCommon(WorklogModel worklog, AppointmentModel appointment) {
 
+    public static void populateCommon(WorklogModel worklog, AppointmentModel appointment) {
         Calendar c = Calendar.getInstance();
         c.setTime(appointment.getStart());
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -20,6 +20,5 @@ public class WorklogHelper {
         worklog.setDate(c.getTime());
         worklog.setTimeSpent((appointment.getEnd().getTime() - appointment.getStart().getTime()) / 1000);
     }
-
 
 }

@@ -3,6 +3,7 @@ package com.dstsystems.hackathon.autotempo.rule;
 import com.dstsystems.hackathon.autotempo.rule.models.RuleSet;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
@@ -11,18 +12,11 @@ import java.io.File;
  */
 public class RuleSetLoader {
 
-    public RuleSet getRuleSet(String path) {
-        try {
-            File file = new File(path);
-            JAXBContext jaxbContext = JAXBContext.newInstance(RuleSet.class);
-
-            Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
-
-            return (RuleSet) jaxbMarshaller.unmarshal(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    public RuleSet getRuleSet(String path) throws JAXBException {
+        File file = new File(path);
+        JAXBContext jaxbContext = JAXBContext.newInstance(RuleSet.class);
+        Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
+        return (RuleSet) jaxbMarshaller.unmarshal(file);
     }
+
 }

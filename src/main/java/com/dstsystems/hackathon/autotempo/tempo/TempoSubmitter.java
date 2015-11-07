@@ -115,35 +115,24 @@ public class TempoSubmitter {
     }
 
     private String sendHttpRequest(HttpUriRequest request) throws IOException {
-        CloseableHttpClient httpClient = null;
-        CloseableHttpResponse response = null;
-
-        try {
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().useSystemProperties().build()) {
             Credentials credentials = new UsernamePasswordCredentials(
                     userProfile.getUsername(), userProfile.getPassword());
             request.addHeader(new BasicScheme().authenticate(credentials, request, null));
 
-            httpClient = HttpClientBuilder.create().useSystemProperties().build();
-            response = httpClient.execute(request);
+            try (CloseableHttpResponse response = httpClient.execute(request)){
+                String result = IOUtils.toString(response.getEntity().getContent());
 
-            String result = IOUtils.toString(response.getEntity().getContent());
+                int httpStatus = response.getStatusLine().getStatusCode();
+                if (httpStatus != 200) {
+                    throw new HttpStatusException("Got http response code " + httpStatus + ": " + result, httpStatus);
+                }
 
-            int httpStatus = response.getStatusLine().getStatusCode();
-            if (httpStatus != 200) {
-                throw new HttpStatusException("Got http response code " + httpStatus + ": " + result, httpStatus);
+                return result;
             }
-
-            return result;
         } catch (AuthenticationException e) {
             // From BasicScheme, should not happen
             throw new RuntimeException(e);
-        } finally {
-            if (httpClient != null) {
-                httpClient.close();
-            }
-            if (response != null) {
-                response.close();
-            }
         }
     }
 
