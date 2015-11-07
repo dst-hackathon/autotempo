@@ -2,7 +2,7 @@
 <RuleSet>
     <ruleList>
     <SimpleCategoryMappingRule>
-        <category>training</category>
+        <category>Training</category>
         <issueKey>INT-1</issueKey>
         <accountKey>account1</accountKey>
         <comment>Training</comment>

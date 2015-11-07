@@ -60,7 +60,8 @@ public class AutoTempoApp {
             conflictAppointmentListFilter.filter(appointmentList);
             System.out.println("No conflicts found");
 
-            RuleSet ruleSet = getSimpleRuleSet();
+            RuleSetLoader ruleSetLoader = new RuleSetLoader();
+            RuleSet ruleSet = ruleSetLoader.getRuleSet("src/main/resources/Rules.xml");
             System.out.println("SimpleRule set");
 
             for (AppointmentModel appointmentModel : appointmentList) {
@@ -81,23 +82,5 @@ public class AutoTempoApp {
         }
 
     }
-
-    private static RuleSet getSimpleRuleSet() {
-        RuleSet ruleSet = new RuleSet();
-
-        SimpleCategoryMappingRule rule = new SimpleCategoryMappingRule();
-        rule.setIssueKey("INT-1");
-        rule.setAccountKey("ATT02");
-        rule.setCategory("Training");
-
-        SimpleCategoryMappingRule rule2 = new SimpleCategoryMappingRule();
-        rule2.setIssueKey("TP-1");
-        rule2.setAccountKey("ATT01");
-        rule2.setCategory("Project");
-
-        ruleSet.setRuleList(Arrays.asList((Rule) rule, rule2));
-        return ruleSet;
-    }
-
 
 }
