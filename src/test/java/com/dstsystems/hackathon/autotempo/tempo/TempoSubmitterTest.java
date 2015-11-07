@@ -125,7 +125,7 @@ public class TempoSubmitterTest {
         doReturn(10L).when(tempoSubmitter).getNewRemainingEstimate("TP-1", 3600);
 
         String expectedJson = "{\n" +
-                "    \"dateStarted\": \"2015-10-31T17:00:00.000Z\",\n" +
+                "    \"dateStarted\": \"2015-11-01T00:00:00\",\n" +
                 "    \"timeSpentSeconds\": 3600,\n" +
                 "    \"comment\": \"My comment\",\n" +
                 "    \"author\": {\n" +

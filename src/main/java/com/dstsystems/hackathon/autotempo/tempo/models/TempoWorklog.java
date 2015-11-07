@@ -7,8 +7,7 @@ import java.util.List;
 
 public class TempoWorklog {
 
-    // Tempo uses local time, but Jackson wants to serialize in UTC, so also pass the timezone
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date dateStarted;
 
     private long timeSpentSeconds;

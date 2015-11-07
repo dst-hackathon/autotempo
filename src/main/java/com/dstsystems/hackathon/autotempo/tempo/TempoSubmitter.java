@@ -22,8 +22,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TempoSubmitter {
 
@@ -33,9 +32,14 @@ public class TempoSubmitter {
     private static final String TIME_TRACKING_FIELD = "?fields=timetracking";
 
     private TempoUserProfileModel userProfile;
+    private ObjectMapper objectMapper;
 
     public TempoSubmitter(TempoUserProfileModel userProfile) {
         this.userProfile = userProfile;
+
+        // Tempo operates in local time
+        objectMapper = new ObjectMapper();
+        objectMapper.setTimeZone(TimeZone.getDefault());
     }
 
     public void submitWorklog(WorklogModel worklogModel) throws IOException {
@@ -64,7 +68,7 @@ public class TempoSubmitter {
                 ACCOUNT_ATTRIBUTE, worklogModel.getAccountKey()));
         tempoWorklog.setWorklogAttributes(worklogAttributes);
 
-        return new ObjectMapper().writeValueAsString(tempoWorklog);
+        return objectMapper.writeValueAsString(tempoWorklog);
     }
 
     protected long getRemainingEstimate(String issueKey) throws IOException {
