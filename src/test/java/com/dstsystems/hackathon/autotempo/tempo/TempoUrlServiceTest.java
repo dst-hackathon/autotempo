@@ -25,4 +25,10 @@ public class TempoUrlServiceTest {
         assertEquals("http://jira/rest/tempo-timesheets/3/worklogs/", tempoUrlService.getWorklogUrl());
     }
 
+    @Test
+    public void testGetWorklogUrlWithTrailingSlash() throws Exception {
+        tempoUrlService = new TempoUrlService("http://jira/");
+        assertEquals("http://jira/rest/tempo-timesheets/3/worklogs/", tempoUrlService.getWorklogUrl());
+    }
+
 }
