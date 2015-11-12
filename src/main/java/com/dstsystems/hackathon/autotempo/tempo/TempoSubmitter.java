@@ -24,21 +24,23 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
 
 public class TempoSubmitter {
 
     private static final String ACCOUNT_ATTRIBUTE = "_Account_";
-    private static final String REST_ISSUE_PATH = "/rest/api/2/issue/";
-    private static final String REST_WORKLOG_PATH = "/rest/tempo-timesheets/3/worklogs/";
-    private static final String TIME_TRACKING_FIELD = "?fields=timetracking";
 
+    private TempoUrlService tempoUrlService;
     private TempoUserProfileModel userProfile;
     private ObjectMapper objectMapper;
     private boolean dry;
 
     public TempoSubmitter(TempoUserProfileModel userProfile) {
         this.userProfile = userProfile;
+
+        tempoUrlService = new TempoUrlService(userProfile.getURL());
 
         // Tempo operates in local time
         objectMapper = new ObjectMapper();
@@ -78,7 +80,7 @@ public class TempoSubmitter {
     }
 
     protected long getRemainingEstimate(String issueKey) throws IOException {
-        HttpGet httpGet = new HttpGet(userProfile.getURL() + REST_ISSUE_PATH + issueKey + TIME_TRACKING_FIELD);
+        HttpGet httpGet = new HttpGet(tempoUrlService.getIssueTimetrackingUrl(issueKey));
         String issueJson = sendHttpRequest(httpGet);
 
         JsonNode jsonNode = new ObjectMapper().readTree(issueJson);
@@ -107,7 +109,7 @@ public class TempoSubmitter {
     }
 
     private String postWorklog(String content) throws IOException {
-        HttpPost httpPost = new HttpPost(userProfile.getURL() + REST_WORKLOG_PATH);
+        HttpPost httpPost = new HttpPost(tempoUrlService.getWorklogUrl());
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setHeader("Origin", userProfile.getURL()); // Required for JIRA cloud instances
         httpPost.setEntity(new StringEntity(content));
