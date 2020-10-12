@@ -22,7 +22,7 @@
         <jcommander.version>1.72</jcommander.version>
 
         <!-- Test -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <mockito.version>1.10.19</mockito.version>
         <wiremock.version>1.58</wiremock.version>
